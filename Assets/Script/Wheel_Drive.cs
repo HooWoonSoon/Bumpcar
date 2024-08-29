@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Wheel_Drive : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class Wheel_Drive : MonoBehaviour
         _rigidbody.centerOfMass = new Vector3(_rigidbody.centerOfMass.x, -0.5f, _rigidbody.centerOfMass.z);
     }
 
-    public void Go(float accelerations, float steer, float brake)
+    public void Drive(float accelerations, float steer, float brake)
     {
         accelerations = Mathf.Clamp(accelerations, -1, 1);
         steer = Mathf.Clamp(steer, -1, 1) * maxStreerAngle;
@@ -51,14 +52,24 @@ public class Wheel_Drive : MonoBehaviour
             Quaternion quaternion;
             Vector3 position;
             _wheelCollider[i].GetWorldPose(out position, out quaternion);
-            Wheels[i].transform.position = position;
             Wheels[i].transform.rotation = quaternion;
+            Wheels[i].transform.position = position;
         }
     }
 
     void Update()
     {
 
+    }
+
+    public void SwitchModeCollider(bool state)
+    {
+        Collider[0].center = new Vector3(0, 1.12f, 0);
+        Collider[1].center = new Vector3(0, 0, -0.08008471f);
+        for (int i = 0; i < 4; i++)
+        {
+            _wheelCollider[i].transform.position += new Vector3(0, 1.12f, 0);
+        }
     }
 
     public void SetLampActivate(bool state)
@@ -68,5 +79,4 @@ public class Wheel_Drive : MonoBehaviour
             Lamp[i].SetActive(state);
         }
     }
-    
 }

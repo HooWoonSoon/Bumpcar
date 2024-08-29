@@ -7,7 +7,7 @@ public class Player_Controller : MonoBehaviour
     private Wheel_Drive drive;
     public Animator animator { get; private set; }
     private bool LampActive = false;
-    private bool wheelActive = true;
+    private bool SwitchMode = false;
 
     #region State
     public Player_StateMachine stateMachine {  get; private set; } 
@@ -47,7 +47,7 @@ public class Player_Controller : MonoBehaviour
         verticalInput = Input.GetAxis("Horizontal");
         JumpOrBreakInput = Input.GetAxis("Jump");
 
-        drive.Go(horizontalInput, verticalInput, JumpOrBreakInput);
+        drive.Drive(horizontalInput, verticalInput, JumpOrBreakInput);
         // Inheritance the UpdateState is not similar like Monobevoiur "Update" it just a name, it used to reduced redundancy @Woon Soon ^_^
         stateMachine.currentState.UpdateStateValue(horizontalInput, verticalInput, JumpOrBreakInput); 
 
@@ -55,6 +55,11 @@ public class Player_Controller : MonoBehaviour
         {
             LampActive = !LampActive;
             drive.SetLampActivate(LampActive);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            SwitchMode = !SwitchMode;
+            drive.SwitchModeCollider(SwitchMode);
         }
     }
 }

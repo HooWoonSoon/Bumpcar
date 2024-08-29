@@ -87,7 +87,7 @@ public class Ai_Controller : MonoBehaviour
 
         // Debug.Log("Brake: " +  brake + "Steer:" + steer + "Speed:" + drive._rigidbody.velocity.magnitude + "Acceleration:" + acceleration);
 
-        drive.Go(acceleration,steer,brake);
+        drive.Drive(acceleration,steer,brake);
 
 
         if (distanceTotarget < 2) // threshold, make larger if car start to circle waypoint
