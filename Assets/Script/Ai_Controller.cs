@@ -67,7 +67,7 @@ public class Ai_Controller : MonoBehaviour
 
         float distanceFactor = distanceTotarget / totalDistanceToTarget;
         
-        float speedFactor = drive.currentSpeed / drive.maxsSpeed;
+        float speedFactor = drive.currentSpeed / drive.maxSpeed;
 
         float acceleration = Mathf.Lerp(accelerationSensitivity, 1, distanceFactor);
         float brake = Mathf.Lerp(-1 -Mathf.Abs(nextTargetAngle) , 1 + speedFactor, 1 - distanceFactor);
@@ -85,7 +85,7 @@ public class Ai_Controller : MonoBehaviour
             Debug.Log(isJump);
         }
 
-        // Debug.Log("Brake: " +  brake + "Steer:" + steer + "Speed:" + drive._rigidbody.velocity.magnitude + "Acceleration:" + acceleration);
+        //Debug.Log("Brake: " +  brake + "Steer:" + steer + "Speed:" + drive._rigidbody.velocity.magnitude + "Acceleration:" + acceleration);
 
         drive.Drive(acceleration,steer,brake);
 

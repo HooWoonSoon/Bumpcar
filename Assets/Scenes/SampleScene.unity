@@ -723,7 +723,7 @@ Transform:
   m_GameObject: {fileID: 267568297}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.119983, y: 4.634575, z: -1.136122}
+  m_LocalPosition: {x: 9.119983, y: 3.92, z: -3.93}
   m_LocalScale: {x: 0.42017, y: 0.42017, z: 0.42017}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2698,9 +2698,11 @@ MonoBehaviour:
   Lamp:
   - {fileID: 2043105281}
   - {fileID: 120218062}
-  Collider: []
-  maxsSpeed: 200
+  maxSpeed: 150
   _rigidbody: {fileID: 631802441}
+  carCollider: {fileID: 631802442}
+  characterCollider: {fileID: 0}
+  moveSpeed: 5
 --- !u!4 &1268725787
 Transform:
   m_ObjectHideFlags: 0
@@ -4533,11 +4535,11 @@ MonoBehaviour:
   Lamp:
   - {fileID: 1029583701}
   - {fileID: 77575492}
-  Collider:
-  - {fileID: 703036757}
-  - {fileID: 451998389}
-  maxsSpeed: 200
+  maxSpeed: 150
   _rigidbody: {fileID: 6206138433645122837}
+  carCollider: {fileID: 703036757}
+  characterCollider: {fileID: 451998389}
+  moveSpeed: 0.5
 --- !u!146 &3866560998534015985
 WheelCollider:
   m_ObjectHideFlags: 0

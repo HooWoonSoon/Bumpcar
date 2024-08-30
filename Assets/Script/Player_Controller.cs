@@ -43,11 +43,18 @@ public class Player_Controller : MonoBehaviour
     void Update()
     {
         stateMachine.currentState.Update();
-        horizontalInput = Input.GetAxis("Vertical");
-        verticalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxis("Horizontal");
         JumpOrBreakInput = Input.GetAxis("Jump");
 
-        drive.Drive(horizontalInput, verticalInput, JumpOrBreakInput);
+        if (SwitchMode == false)
+        {
+            drive.Drive(verticalInput, horizontalInput, JumpOrBreakInput);
+        }
+        else
+        {
+            drive.HoldCarWalk(verticalInput, horizontalInput, JumpOrBreakInput);   
+        }
         // Inheritance the UpdateState is not similar like Monobevoiur "Update" it just a name, it used to reduced redundancy @Woon Soon ^_^
         stateMachine.currentState.UpdateStateValue(horizontalInput, verticalInput, JumpOrBreakInput); 
 
