@@ -2703,6 +2703,7 @@ MonoBehaviour:
   carCollider: {fileID: 631802442}
   characterCollider: {fileID: 0}
   moveSpeed: 5
+  rotationSpeed: 100
 --- !u!4 &1268725787
 Transform:
   m_ObjectHideFlags: 0
@@ -4539,7 +4540,8 @@ MonoBehaviour:
   _rigidbody: {fileID: 6206138433645122837}
   carCollider: {fileID: 703036757}
   characterCollider: {fileID: 451998389}
-  moveSpeed: 0.5
+  moveSpeed: 1
+  rotationSpeed: 100
 --- !u!146 &3866560998534015985
 WheelCollider:
   m_ObjectHideFlags: 0

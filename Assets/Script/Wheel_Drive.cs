@@ -20,7 +20,8 @@ public class Wheel_Drive : MonoBehaviour
     [Header("Walk")]
     [SerializeField] private BoxCollider carCollider;
     [SerializeField] private BoxCollider characterCollider;
-    public float moveSpeed = 1f;
+    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float rotationSpeed = 100f;
 
     private Vector3 carOriginColliderCenter;
     private Vector3 characterOriginColliderCenter;
@@ -75,7 +76,7 @@ public class Wheel_Drive : MonoBehaviour
         if (movementDirection != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
-            _rigidbody.MoveRotation(Quaternion.RotateTowards(_rigidbody.rotation, toRotation, maxStreerAngle * Time.deltaTime));
+            _rigidbody.MoveRotation(Quaternion.RotateTowards(_rigidbody.rotation, toRotation, rotationSpeed * Time.deltaTime));
         }
 
         _rigidbody.MovePosition(_rigidbody.position + movementDirection * moveSpeed * Time.deltaTime);
