@@ -18,10 +18,12 @@ public class Wheel_Drive : MonoBehaviour
     public Rigidbody _rigidbody;
 
     [Header("Walk")]
+    [SerializeField] private Transform carBody;
     [SerializeField] private BoxCollider carCollider;
     [SerializeField] private BoxCollider characterCollider;
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float rotationSpeed = 100f;
+    [SerializeField] private float jumpForce = 10f;
 
     private Vector3 carOriginColliderCenter;
     private Vector3 characterOriginColliderCenter;
@@ -67,20 +69,45 @@ public class Wheel_Drive : MonoBehaviour
         }
     }
 
-    public void HoldCarWalk(float vertical, float horizontal, float jump) // To controt character movement and rotation, but the operation base would rectify by transform orientation
+    //public void HoldCarWalk(float vertical, float horizontal, float jump) // To controt character movement and rotation, but the operation base would rectify by transform orientation
+    //{
+    //    vertical = Mathf.Clamp(vertical, -1, 1);
+    //    horizontal = Mathf.Clamp(horizontal, -1, 1);
+    //    movementDirection = new Vector3(horizontal, 0, vertical).normalized;
+
+    //    if (movementDirection != Vector3.zero)
+    //    {
+    //        Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+    //        _rigidbody.MoveRotation(Quaternion.RotateTowards(_rigidbody.rotation, toRotation, rotationSpeed * Time.deltaTime));
+    //    }
+
+    //    _rigidbody.MovePosition(_rigidbody.position + movementDirection * moveSpeed * Time.deltaTime);
+    //}
+
+    public void HoldCarWalk(float vertical, float horizontal, float jump)
     {
+        // 限制输入在 -1 到 1 之间
         vertical = Mathf.Clamp(vertical, -1, 1);
         horizontal = Mathf.Clamp(horizontal, -1, 1);
-        movementDirection = new Vector3(horizontal, 0, vertical).normalized;
 
-        if (movementDirection != Vector3.zero)
+        // 旋转控制（A和D控制旋转）
+        if (Mathf.Abs(horizontal) > 0.1f)
         {
-            Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
-            _rigidbody.MoveRotation(Quaternion.RotateTowards(_rigidbody.rotation, toRotation, rotationSpeed * Time.deltaTime));
+            Quaternion deltaRotation = Quaternion.Euler(0, horizontal * rotationSpeed * Time.deltaTime, 0);
+            _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
 
-        _rigidbody.MovePosition(_rigidbody.position + movementDirection * moveSpeed * Time.deltaTime);
+        // 使用 carBody 的前方方向进行移动
+        Vector3 forwardMovement = carBody.forward * vertical * moveSpeed * Time.deltaTime;
+        _rigidbody.MovePosition(_rigidbody.position + forwardMovement);
+
+        // 跳跃功能
+        if (jump > 0)
+        {
+            _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
     }
+
 
     void Update()
     {
@@ -91,20 +118,20 @@ public class Wheel_Drive : MonoBehaviour
     {
         if (state)
         {
-            carCollider.center = new Vector3(0, 1.12f, 0);
+            carCollider.enabled = false;
             characterCollider.center = new Vector3(0, 0, -0.08008471f);
             for (int i = 0; i < 4; i++)
             {
-                _wheelCollider[i].transform.position += new Vector3(0, 1.12f, 0);
+                _wheelCollider[i].enabled = false;
             }
         }
         else
         {
-            carCollider.center = carOriginColliderCenter;
+            carCollider.enabled=true;
             characterCollider.center = characterOriginColliderCenter;
             for (int i = 0; i < 4; i++)
             {
-                _wheelCollider[i].transform.position -= new Vector3(0, 1.12f, 0);
+                _wheelCollider[i].enabled = true;
             }
         }
     }
