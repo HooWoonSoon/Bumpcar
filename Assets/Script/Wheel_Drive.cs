@@ -89,16 +89,12 @@ public class Wheel_Drive : MonoBehaviour
 
         if (jump > 0 && IsGrounded())
         {
-            _rigidbody.MovePosition(_rigidbody.position + new Vector3(0, jumpForce,0));
+            _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
     void Update()
     {
         IsGrounded();
-        if (IsGrounded())
-        {
-            Debug.Log("Grounded");
-        }
     }
 
     private bool IsGrounded()
