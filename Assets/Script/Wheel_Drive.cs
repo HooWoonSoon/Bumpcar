@@ -18,12 +18,13 @@ public class Wheel_Drive : MonoBehaviour
     public Rigidbody _rigidbody;
 
     [Header("Walk")]
-    [SerializeField] private Transform carBody;
+    [SerializeField] private Transform HoldCarTransform;
     [SerializeField] private BoxCollider carCollider;
-    [SerializeField] private BoxCollider characterCollider;
+    [SerializeField] BoxCollider characterCollider;
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private float jumpForce = 10f;
+    private float coolDownTimer;
 
     [SerializeField] private Transform boxGroundCheck;
     [SerializeField] private float groundCheckDistance;
@@ -42,6 +43,7 @@ public class Wheel_Drive : MonoBehaviour
     void Start()
     {
         _rigidbody.centerOfMass = new Vector3(_rigidbody.centerOfMass.x, -0.5f, _rigidbody.centerOfMass.z);
+        characterOriginColliderCenter = characterCollider.center;
     }
 
     public void Drive(float accelerations, float steer, float brake)
@@ -75,6 +77,7 @@ public class Wheel_Drive : MonoBehaviour
 
     public void HoldCarWalk(float vertical, float horizontal, float jump)
     {
+        //float stateTimer = 5;
         vertical = Mathf.Clamp(vertical, -1, 1);
         horizontal = Mathf.Clamp(horizontal, -1, 1);
 
@@ -84,14 +87,17 @@ public class Wheel_Drive : MonoBehaviour
             _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
 
-        Vector3 forwardMovement = carBody.forward * vertical * moveSpeed * Time.deltaTime;
+        Vector3 forwardMovement = HoldCarTransform.forward * vertical * moveSpeed * Time.deltaTime;
         _rigidbody.MovePosition(_rigidbody.position + forwardMovement);
 
         if (jump > 0 && IsGrounded())
         {
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            //coolDownTimer = stateTimer;
         }
+        //coolDownTimer -= Time.deltaTime;
     }
+
     void Update()
     {
         IsGrounded();
