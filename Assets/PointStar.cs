@@ -2,6 +2,7 @@
 
 public class PointStar : MonoBehaviour
 {
+    private Game_Manager manager;
     private Entity entity;
     private Ai_Controller ai; // temporarily
 

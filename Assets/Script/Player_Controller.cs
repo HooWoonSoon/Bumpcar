@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player_Controller : Entity
 {
     private Wheel_Drive drive;
+    private Entity entity;
     public Animator animator { get; private set; }
     private bool LampActive = false;
     private bool SwitchMode = false;
@@ -21,10 +22,13 @@ public class Player_Controller : Entity
     [HideInInspector] public float verticalInput;
     [HideInInspector] public float JumpOrBreakInput;
 
+
+    private int currentIndex;
     protected override void Awake()
     {
         base.Awake();
         stateMachine = new Player_StateMachine();
+        entity = GetComponent<Entity>();
         driveIdleState = new Player_DriveIdleState(this, stateMachine, "DriveIdle");
         driveState = new Player_DriveState(this, stateMachine, "Drive");
         holdCarIdle = new Player_HoldCarIdle(this, stateMachine, "HoldCarIdle");
@@ -39,6 +43,14 @@ public class Player_Controller : Entity
         stateMachine.Initialize(driveIdleState);;
         this.drive = GetComponent<Wheel_Drive>();
         drive.SetLampActivate(LampActive);
+        currentIndex = SearchIndex();
+        Debug.Log("myIndex:" + currentIndex);
+    }
+
+    private int SearchIndex()
+    {
+        Game_Manager manager = FindAnyObjectByType<Game_Manager>();
+        return manager.GetPlayerIndex(entity);
     }
 
     void Update()
