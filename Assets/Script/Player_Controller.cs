@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Controller : MonoBehaviour
+public class Player_Controller : Entity
 {
     private Wheel_Drive drive;
     public Animator animator { get; private set; }
@@ -21,8 +21,9 @@ public class Player_Controller : MonoBehaviour
     [HideInInspector] public float verticalInput;
     [HideInInspector] public float JumpOrBreakInput;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         stateMachine = new Player_StateMachine();
         driveIdleState = new Player_DriveIdleState(this, stateMachine, "DriveIdle");
         driveState = new Player_DriveState(this, stateMachine, "Drive");
@@ -31,11 +32,11 @@ public class Player_Controller : MonoBehaviour
     }
 
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         animator = GetComponentInChildren<Animator>();
-        stateMachine.Initialize(driveIdleState);
-
+        stateMachine.Initialize(driveIdleState);;
         this.drive = GetComponent<Wheel_Drive>();
         drive.SetLampActivate(LampActive);
     }

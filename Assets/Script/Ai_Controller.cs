@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ai_Controller : MonoBehaviour
+public class Ai_Controller : Entity
 {
     public Circuit circuit;
     Wheel_Drive drive;
@@ -20,8 +20,13 @@ public class Ai_Controller : MonoBehaviour
     private int currentTackerWayPoint = 0;
     private float lookAhead = 10;
 
-    void Start()
+    protected override void Awake()
     {
+        base.Awake();
+    }
+    protected override void Start()
+    {
+        base.Start();
         drive = GetComponent<Wheel_Drive>();
         target = circuit.waypoints[currentWayPoint].transform.position;
         nextTarget = circuit.waypoints[currentWayPoint + 1].transform.position;

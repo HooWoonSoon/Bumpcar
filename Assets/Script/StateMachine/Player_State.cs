@@ -22,12 +22,12 @@ public class Player_State
     }
     public virtual void Update()
     {
-        Debug.Log("I'm in" + animBoolName);
+        //Debug.Log("I'm in" + animBoolName);
     }
 
     public virtual void UpdateStateValue(float horizontalInput, float verticalInput, float jumpInput) 
     {
-        Debug.Log("Using Move Module");
+        //Debug.Log("Using Move Module");
     }
 
 public virtual void Exit()

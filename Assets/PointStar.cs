@@ -1,19 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.Playables;
+﻿using UnityEngine;
 
 public class PointStar : MonoBehaviour
 {
-    private GameData gameData;
-    private void OnCollisionEnter(Collision collision)
+    private Entity entity;
+    private Ai_Controller ai; // temporarily
+
+    private void Start()
     {
-        if (collision.gameObject.tag == "Player")
-        {
-            Destroy(this.gameObject);
-        }
+        entity = FindAnyObjectByType<Entity>();
     }
 
-
+    private void OnTriggerEnter(Collider other)
+    {   
+        if (other.tag == "Car")
+        {
+            entity.AddPoint();
+            this.gameObject.SetActive(false);
+            Debug.Log("IsAddPoint");
+        }
+    }
 }

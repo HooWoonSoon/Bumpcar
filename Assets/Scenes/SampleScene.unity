@@ -468,7 +468,7 @@ GameObject:
   - component: {fileID: 147235115}
   m_Layer: 0
   m_Name: Car
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1882,6 +1882,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1414139720}
     m_Modifications:
+    - target: {fileID: -8816229329467686888, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1952,11 +1957,36 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8114206146929504093, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: -6516654829905993041, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7fa29e89a672f534c9ce67be99bb9cfd, type: 2}
+    - target: {fileID: -6334522115669559555, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: -5979313275742359648, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: -5745961025070230935, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: -5641823528409710315, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: -5489356648370484198, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1967,6 +1997,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7fa29e89a672f534c9ce67be99bb9cfd, type: 2}
+    - target: {fileID: -5176963414733330155, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: -5052570794929659048, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1982,11 +2017,26 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7fa29e89a672f534c9ce67be99bb9cfd, type: 2}
+    - target: {fileID: -3356136799585626140, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: -2739168913277312136, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: -2444643825422211645, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7fa29e89a672f534c9ce67be99bb9cfd, type: 2}
+    - target: {fileID: -1931343395975715795, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: -1908479379864268719, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2007,6 +2057,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7fa29e89a672f534c9ce67be99bb9cfd, type: 2}
+    - target: {fileID: -363773343598127506, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: 705560378334020845, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2017,21 +2072,81 @@ PrefabInstance:
       propertyPath: m_Name
       value: Compile
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 959742458767096123, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: 978446916453981143, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7fa29e89a672f534c9ce67be99bb9cfd, type: 2}
+    - target: {fileID: 2316289292418246816, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178773194210612907, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316999520036165430, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 3646912978139352349, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 5597184711320938548, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 5719154508464532439, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: 6455329950147758146, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7fa29e89a672f534c9ce67be99bb9cfd, type: 2}
+    - target: {fileID: 7036213049465896255, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225423047929989335, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: 7434791719704832586, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7fa29e89a672f534c9ce67be99bb9cfd, type: 2}
+    - target: {fileID: 8079146756670339989, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 8474365066080652218, guid: 1c49f97391087934dad3c822189542a4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: 8722126133283618696, guid: 1c49f97391087934dad3c822189542a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2214,12 +2329,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6562fae82d9654345b093376aee50b78,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 50.853825
+      value: 50.853832
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6562fae82d9654345b093376aee50b78,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.03
+      value: -0.030000567
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6562fae82d9654345b093376aee50b78,
         type: 3}
@@ -2229,7 +2344,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6562fae82d9654345b093376aee50b78,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.02
+      value: 0.019999938
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6562fae82d9654345b093376aee50b78,
         type: 3}
@@ -2441,6 +2556,7 @@ Transform:
   - {fileID: 842048559}
   - {fileID: 120218063}
   - {fileID: 2043105282}
+  - {fileID: 1511462097}
   - {fileID: 29731005}
   - {fileID: 1738050817}
   m_Father: {fileID: 1268725787}
@@ -2457,7 +2573,7 @@ GameObject:
   - component: {fileID: 647242648}
   m_Layer: 0
   m_Name: CarBodyCollider
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2907,7 +3023,7 @@ GameObject:
   - component: {fileID: 1028097609}
   m_Layer: 0
   m_Name: Spot Light
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3401,6 +3517,7 @@ GameObject:
   - component: {fileID: 1128992224}
   - component: {fileID: 1128992223}
   - component: {fileID: 1128992222}
+  - component: {fileID: 1128992225}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -3417,7 +3534,7 @@ Transform:
   m_GameObject: {fileID: 1128992220}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.18, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3438,7 +3555,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -3494,6 +3611,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128992220}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1128992225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128992220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 900f748b4dbb77d46b4b2d045dfbe609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1188366267
 GameObject:
   m_ObjectHideFlags: 0
@@ -3590,7 +3719,7 @@ GameObject:
   - component: {fileID: 1214991262}
   m_Layer: 0
   m_Name: 'Spot Light '
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3707,7 +3836,7 @@ GameObject:
   - component: {fileID: 1245930242}
   m_Layer: 0
   m_Name: FoxCollider
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4006,7 +4135,7 @@ MonoBehaviour:
   _rigidbody: {fileID: 631802441}
   HoldCarTransform: {fileID: 631802445}
   carCollider: {fileID: 631802442}
-  characterCollider: {fileID: 0}
+  characterCollider: {fileID: 1511462096}
   moveSpeed: 5
   rotationSpeed: 100
   jumpForce: 10
@@ -4471,7 +4600,7 @@ GameObject:
   - component: {fileID: 1414139721}
   m_Layer: 0
   m_Name: CarBody
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4889,6 +5018,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2068898815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1511462095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1511462097}
+  - component: {fileID: 1511462096}
+  m_Layer: 0
+  m_Name: FoxCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1511462096
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511462095}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.2219882, z: 0.34157404}
+  m_Center: {x: 0, y: 0.61099386, z: -0.11057114}
+--- !u!4 &1511462097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511462095}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 631802445}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1584129842
 GameObject:
   m_ObjectHideFlags: 0
@@ -4900,7 +5082,7 @@ GameObject:
   - component: {fileID: 1584129843}
   m_Layer: 0
   m_Name: GroundCheck
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5131,7 +5313,7 @@ GameObject:
   - component: {fileID: 1731283986}
   m_Layer: 0
   m_Name: WheelsCollider
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
