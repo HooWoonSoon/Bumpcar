@@ -6,51 +6,51 @@ public class Player_Controller : Entity
 {
     private Wheel_Drive drive;
     private Entity entity;
+    private Game_Manager manager;
     public Animator animator { get; private set; }
     private bool LampActive = false;
     private bool SwitchMode = false;
 
     #region State
     public Player_StateMachine stateMachine {  get; private set; } 
-    public Player_DriveIdleState driveIdleState { get; private set; }
-    public Player_DriveState driveState { get; private set; }
-    public Player_HoldCarIdle holdCarIdle { get; private set; }
-    public Player_HoldCarMove holdCarMove { get; private set; }
+    public Player_idleState IdleState { get; private set; }
+    public Player_MoveState moveState { get; private set; }
+    public Player_TurnLeftState turnLeftState { get; private set; }
+    public Player_TurnRightState turnRightState { get; private set; }
     #endregion
 
     [HideInInspector] public float horizontalInput;
     [HideInInspector] public float verticalInput;
     [HideInInspector] public float JumpOrBreakInput;
 
-
-    private int currentIndex;
+    [SerializeField] private GameObject driveComponent;
+    [SerializeField] private GameObject walkComponent;
     protected override void Awake()
     {
         base.Awake();
         stateMachine = new Player_StateMachine();
         entity = GetComponent<Entity>();
-        driveIdleState = new Player_DriveIdleState(this, stateMachine, "DriveIdle");
-        driveState = new Player_DriveState(this, stateMachine, "Drive");
-        holdCarIdle = new Player_HoldCarIdle(this, stateMachine, "HoldCarIdle");
-        holdCarMove = new Player_HoldCarMove(this, stateMachine, "HoldCarMove");
+        IdleState = new Player_idleState(this, stateMachine, "Idle");
+        moveState = new Player_MoveState(this, stateMachine, "Move");
+        turnLeftState = new Player_TurnLeftState(this, stateMachine, "TurnLeft");
+        turnRightState = new Player_TurnRightState(this, stateMachine, "TurnRight");
     }
-
 
     protected override void Start()
     {
         base.Start();
+        manager = FindAnyObjectByType<Game_Manager>();
+        driveComponent.SetActive(!SwitchMode);
+        walkComponent.SetActive(SwitchMode);
         animator = GetComponentInChildren<Animator>();
-        stateMachine.Initialize(driveIdleState);;
+        stateMachine.Initialize(IdleState);;
         this.drive = GetComponent<Wheel_Drive>();
         drive.SetLampActivate(LampActive);
         currentIndex = SearchIndex();
-        Debug.Log("myIndex:" + currentIndex);
     }
-
     private int SearchIndex()
     {
-        Game_Manager manager = FindAnyObjectByType<Game_Manager>();
-        return manager.GetPlayerIndex(entity);
+        return manager.GetPlayerIndex(entity); // don't touch please
     }
 
     void Update()
@@ -80,6 +80,9 @@ public class Player_Controller : Entity
         {
             SwitchMode = !SwitchMode;
             drive.SwitchModeCollider(SwitchMode);
+            driveComponent.SetActive(!SwitchMode);
+            walkComponent.SetActive(SwitchMode);
+            animator = GetComponentInChildren<Animator>();
         }
     }
 }

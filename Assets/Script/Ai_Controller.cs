@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Ai_Controller : Entity
 {
+    private Entity entity;
     public Circuit circuit;
     Wheel_Drive drive;
     public float steeringSensitivity = 0.01f;
@@ -20,9 +22,13 @@ public class Ai_Controller : Entity
     private int currentTackerWayPoint = 0;
     private float lookAhead = 10;
 
+
+
     protected override void Awake()
     {
         base.Awake();
+        entity = GetComponent<Entity>();
+        
     }
     protected override void Start()
     {
@@ -37,6 +43,12 @@ public class Ai_Controller : Entity
         DestroyImmediate(tracker.GetComponent<Collider>());
         tracker.transform.position = drive._rigidbody.gameObject.transform.position;
         transform.transform.rotation = drive._rigidbody.gameObject.transform.rotation;
+        currentIndex = SearchIndex();
+    }
+    private int SearchIndex()
+    {
+        Game_Manager manager = FindAnyObjectByType<Game_Manager>();
+        return manager.GetPlayerIndex(entity); // don't touch please
     }
 
     private void ProgressTracker()
