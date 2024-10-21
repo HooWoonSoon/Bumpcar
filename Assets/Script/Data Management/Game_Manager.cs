@@ -5,13 +5,8 @@ using UnityEngine;
 public class Game_Manager : MonoBehaviour
 {
     public List<Entity> player;
-
-    #region Global timer
-    [SerializeField] private float variationTime = 150f;
     public float globalTimer;
-    private float nextToggleTime;
-    public bool daylight;
-    #endregion
+
     private void Start()
     {
         for (int i = 0; i < player.Count; i++)
@@ -19,7 +14,6 @@ public class Game_Manager : MonoBehaviour
             Game_Data.Instance.AddPlayer(player[i].isAI, "Player" + "[" + i.ToString() + "]");
             player[i].SetPlayer(i);
         }
-        daylight = true;
     }
     
     public int GetPlayerIndex(Entity entity)
@@ -34,13 +28,6 @@ public class Game_Manager : MonoBehaviour
     private void FixedUpdate()
     {
         globalTimer = Mathf.FloorToInt(Time.time);
-        if (globalTimer >= nextToggleTime)
-        {
-            daylight = !daylight;
-            Debug.Log(daylight);
-
-            nextToggleTime += variationTime;
-        }
         SycnTimer();
     }
 
