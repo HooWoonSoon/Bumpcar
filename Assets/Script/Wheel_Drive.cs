@@ -14,6 +14,7 @@ public class Wheel_Drive : MonoBehaviour
     [SerializeField] private GameObject[] Wheels;
     [SerializeField] private GameObject[] Lamp;
     public float maxSpeed = 150f;
+    private float changeMaxSpeed;
 
     public Rigidbody _rigidbody;
 

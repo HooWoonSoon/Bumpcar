@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -22,17 +23,35 @@ public class Ai_Controller : Entity
     private int currentTackerWayPoint = 0;
     private float lookAhead = 10;
 
+    #region internal
+    public float steer {  get; private set; }
+    public float acceleration { get; private set; }
+    public float brake {  get; private set; }
+    #endregion
 
+    public Animator animator { get; private set; }
+
+    public PlayerOrAi_StateMachine stateMachine { get; private set; }
+    public Ai_IdleState idleState { get; private set; }
+    public Ai_MoveState moveState { get; private set; }
+    public Ai_TurnLeftState turnLeftState { get; private set; }
+    public Ai_TurnRightState turnRightState { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
+        stateMachine = new PlayerOrAi_StateMachine();
+        idleState = new Ai_IdleState(this, stateMachine, "Idle");
+        moveState = new Ai_MoveState(this, stateMachine, "Move");
+        turnLeftState = new Ai_TurnLeftState(this, stateMachine, "TurnLeft");
+        turnRightState = new Ai_TurnRightState(this, stateMachine, "TurnRight");
         entity = GetComponent<Entity>();
-        
     }
     protected override void Start()
     {
         base.Start();
+        animator = GetComponentInChildren<Animator>();
+        stateMachine.Initialize(idleState);
         drive = GetComponent<Wheel_Drive>();
         target = circuit.waypoints[currentWayPoint].transform.position;
         nextTarget = circuit.waypoints[currentWayPoint + 1].transform.position;
@@ -80,14 +99,14 @@ public class Ai_Controller : Entity
         float targetAngle = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
         float nextTargetAngle = Mathf.Atan2(nextLocalTarget.x, nextLocalTarget.z) * Mathf.Rad2Deg;
 
-        float steer = Mathf.Clamp(targetAngle * steeringSensitivity, -1, 1) * Mathf.Sign(drive.currentSpeed);
+        steer = Mathf.Clamp(targetAngle * steeringSensitivity, -1, 1) * Mathf.Sign(drive.currentSpeed);
 
         float distanceFactor = distanceTotarget / totalDistanceToTarget;
         
         float speedFactor = drive.currentSpeed / drive.maxSpeed;
 
-        float acceleration = Mathf.Lerp(accelerationSensitivity, 1, distanceFactor);
-        float brake = Mathf.Lerp(-1 -Mathf.Abs(nextTargetAngle) , 1 + speedFactor, 1 - distanceFactor);
+        acceleration = Mathf.Lerp(accelerationSensitivity, 1, distanceFactor);
+        brake = Mathf.Lerp(-1 -Mathf.Abs(nextTargetAngle) , 1 + speedFactor, 1 - distanceFactor);
 
         if (Mathf.Abs(nextTargetAngle) > 20)
         {
@@ -105,7 +124,7 @@ public class Ai_Controller : Entity
         //Debug.Log("Brake: " +  brake + "Steer:" + steer + "Speed:" + drive._rigidbody.velocity.magnitude + "Acceleration:" + acceleration);
 
         drive.Drive(acceleration,steer,brake);
-
+        stateMachine.currentState.UpdateStateValue_Ai(acceleration, steer, brake);
 
         if (distanceTotarget < 2) // threshold, make larger if car start to circle waypoint
         {

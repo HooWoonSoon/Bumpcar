@@ -9,6 +9,10 @@ public class Game_Manager : MonoBehaviour
 
     private void Start()
     {
+        //foreach (Entity go in Resources.FindObjectsOfTypeAll<Entity>())
+        //{
+        //    player.Add(go);
+        //}
         for (int i = 0; i < player.Count; i++)
         {
             Game_Data.Instance.AddPlayer(player[i].isAI, "Player" + "[" + i.ToString() + "]");

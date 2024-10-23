@@ -625,7 +625,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2989e83e79b06604a88b0bccab11b489, type: 2}
+  - {fileID: 2100000, guid: 7fa29e89a672f534c9ce67be99bb9cfd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2445,9 +2445,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player:
-  - {fileID: 147235119}
-  - {fileID: 1561172093}
   - {fileID: 1268725788}
+  - {fileID: 1561172093}
+  - {fileID: 147235119}
   globalTimer: 0
 --- !u!4 &531945985
 Transform:
@@ -9628,7 +9628,6 @@ SceneRoots:
   - {fileID: 1936264977}
   - {fileID: 832575519}
   - {fileID: 192460848}
-  - {fileID: 147235118}
   - {fileID: 1268725787}
   - {fileID: 1561172096}
   - {fileID: 2068898815}
@@ -9640,3 +9639,4 @@ SceneRoots:
   - {fileID: 531945985}
   - {fileID: 1979844489}
   - {fileID: 928505563}
+  - {fileID: 147235118}

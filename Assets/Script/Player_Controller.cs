@@ -12,8 +12,8 @@ public class Player_Controller : Entity
     private bool SwitchMode = false;
 
     #region State
-    public Player_StateMachine stateMachine {  get; private set; } 
-    public Player_idleState IdleState { get; private set; }
+    public PlayerOrAi_StateMachine stateMachine {  get; private set; } 
+    public Player_idleState idleState { get; private set; }
     public Player_MoveState moveState { get; private set; }
     public Player_TurnLeftState turnLeftState { get; private set; }
     public Player_TurnRightState turnRightState { get; private set; }
@@ -28,9 +28,9 @@ public class Player_Controller : Entity
     protected override void Awake()
     {
         base.Awake();
-        stateMachine = new Player_StateMachine();
+        stateMachine = new PlayerOrAi_StateMachine();
         entity = GetComponent<Entity>();
-        IdleState = new Player_idleState(this, stateMachine, "Idle");
+        idleState = new Player_idleState(this, stateMachine, "Idle");
         moveState = new Player_MoveState(this, stateMachine, "Move");
         turnLeftState = new Player_TurnLeftState(this, stateMachine, "TurnLeft");
         turnRightState = new Player_TurnRightState(this, stateMachine, "TurnRight");
@@ -43,7 +43,7 @@ public class Player_Controller : Entity
         driveComponent.SetActive(!SwitchMode);
         walkComponent.SetActive(SwitchMode);
         animator = GetComponentInChildren<Animator>();
-        stateMachine.Initialize(IdleState);;
+        stateMachine.Initialize(idleState);;
         this.drive = GetComponent<Wheel_Drive>();
         drive.SetLampActivate(LampActive);
         currentIndex = SearchIndex();
@@ -69,7 +69,7 @@ public class Player_Controller : Entity
             drive.HoldCarWalk(verticalInput, horizontalInput, JumpOrBreakInput);   
         }
         // Inheritance the UpdateState is not similar like Monobevoiur "Update" it just a name, it used to reduced redundancy @Woon Soon ^_^
-        stateMachine.currentState.UpdateStateValue(horizontalInput, verticalInput, JumpOrBreakInput); 
+        stateMachine.currentState.UpdateStateValue_Non_Ai(horizontalInput, verticalInput, JumpOrBreakInput); 
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
