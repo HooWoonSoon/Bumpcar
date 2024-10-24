@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class Ai_Controller : Entity
 {
-    private Entity entity;
     public Circuit circuit;
-    Wheel_Drive drive;
+    public Wheel_Drive drive {  get; private set; }
+    private DayNightCycle dayLight;
     public float steeringSensitivity = 0.01f;
     public float accelerationSensitivity = 0.3f;
     private Vector3 target;
@@ -23,19 +24,23 @@ public class Ai_Controller : Entity
     private int currentTackerWayPoint = 0;
     private float lookAhead = 10;
 
-    #region internal
+    public GameObject driveComponent;
+    public GameObject walkComponent;
+
+    #region Drive internal
     public float steer {  get; private set; }
     public float acceleration { get; private set; }
     public float brake {  get; private set; }
     #endregion
 
-    public Animator animator { get; private set; }
-
+    [HideInInspector] public bool switchMode = false;
+    private Entity entity;
     public PlayerOrAi_StateMachine stateMachine { get; private set; }
     public Ai_IdleState idleState { get; private set; }
     public Ai_MoveState moveState { get; private set; }
     public Ai_TurnLeftState turnLeftState { get; private set; }
     public Ai_TurnRightState turnRightState { get; private set; }
+    public Animator animator;
 
     protected override void Awake()
     {
@@ -63,6 +68,7 @@ public class Ai_Controller : Entity
         tracker.transform.position = drive._rigidbody.gameObject.transform.position;
         transform.transform.rotation = drive._rigidbody.gameObject.transform.rotation;
         currentIndex = SearchIndex();
+        dayLight = FindAnyObjectByType<DayNightCycle>();
     }
     private int SearchIndex()
     {
@@ -88,10 +94,13 @@ public class Ai_Controller : Entity
             }
         }
     }
+    private void IsCarLight() => drive.SetLampActivate(!dayLight.daylight);
 
     void Update()
     {
         ProgressTracker();
+        IsCarLight();
+        //RockPlaneDetected();
         Vector3 localTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(target);
         Vector3 nextLocalTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(nextTarget);
         float distanceTotarget = Vector3.Distance(target,drive._rigidbody.gameObject.transform.position);
@@ -107,7 +116,6 @@ public class Ai_Controller : Entity
 
         acceleration = Mathf.Lerp(accelerationSensitivity, 1, distanceFactor);
         brake = Mathf.Lerp(-1 -Mathf.Abs(nextTargetAngle) , 1 + speedFactor, 1 - distanceFactor);
-
         if (Mathf.Abs(nextTargetAngle) > 20)
         {
             brake += 0.8f;
@@ -118,12 +126,19 @@ public class Ai_Controller : Entity
         {
             acceleration = 1;
             brake = 0;
-            Debug.Log(isJump);
         }
 
         //Debug.Log("Brake: " +  brake + "Steer:" + steer + "Speed:" + drive._rigidbody.velocity.magnitude + "Acceleration:" + acceleration);
 
-        drive.Drive(acceleration,steer,brake);
+        if (switchMode == false)
+        {
+            drive.Drive(acceleration,steer,brake);
+            //Debug.Log(steer);
+        }
+        else
+        {
+            drive.AiHoldCarWalk(acceleration,steer);
+        }
         stateMachine.currentState.UpdateStateValue_Ai(acceleration, steer, brake);
 
         if (distanceTotarget < 2) // threshold, make larger if car start to circle waypoint
@@ -149,7 +164,6 @@ public class Ai_Controller : Entity
             {
                 isJump = false;
             }
-
         }
     }
 }

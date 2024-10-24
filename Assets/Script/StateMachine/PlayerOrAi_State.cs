@@ -29,8 +29,6 @@ public class PlayerOrAi_State
             player.animator.SetBool(animBoolName, true);
         else if (ai != null)
             ai.animator.SetBool(animBoolName, true);
-            Debug.Log("Ai Enter" + stateMachine.currentState);
-        
     }
     public virtual void Update()
     {
@@ -44,7 +42,6 @@ public class PlayerOrAi_State
 
     public virtual void UpdateStateValue_Ai(float acceleration, float steer, float brake)
     {
-        Debug.Log("Ai State");
     }
 
 public virtual void Exit()
@@ -53,6 +50,5 @@ public virtual void Exit()
             player.animator.SetBool(animBoolName, false);
         else if (ai != null)
             ai.animator.SetBool(animBoolName, false);
-            Debug.Log("Ai Exit");
     }
 }

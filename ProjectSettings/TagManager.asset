@@ -5,11 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Car
+  - RockPlane
+  - DetectBox
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - RockPlane
   - Water
   - UI
   - 

@@ -26,5 +26,9 @@ public class Player_TurnRightState : PlayerOrAi_State
         {
             stateMachine.ChangState(player.moveState);
         }
+        else if (vertical < 0)
+        {
+            stateMachine.ChangState(player.turnLeftState);
+        }
     }
 }

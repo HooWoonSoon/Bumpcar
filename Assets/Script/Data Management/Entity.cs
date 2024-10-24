@@ -6,6 +6,7 @@ public class Entity : MonoBehaviour
 {
     public bool isAI;
     protected Game_Data gameData;
+
     public int currentIndex { get; protected set; }
     protected int characterIndex;
 

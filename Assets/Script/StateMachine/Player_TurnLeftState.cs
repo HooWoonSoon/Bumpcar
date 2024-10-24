@@ -22,9 +22,13 @@ public class Player_TurnLeftState : PlayerOrAi_State
     {
         base.UpdateStateValue_Non_Ai(horizontal, vertical, jump);
 
-        if (horizontal >= 0)
+        if (horizontal > 0)
         {
             stateMachine.ChangState(player.moveState);
+        }
+        else if (vertical > 0)
+        {
+            stateMachine.ChangState(player.turnRightState);
         }
     }
 }

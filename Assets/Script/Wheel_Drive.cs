@@ -31,10 +31,6 @@ public class Wheel_Drive : MonoBehaviour
     [SerializeField] private float groundCheckDistance;
     [SerializeField] LayerMask ground;
 
-    private Vector3 carOriginColliderCenter;
-    private Vector3 characterOriginColliderCenter;
-    private Vector3 movementDirection;
-
     public float currentSpeed { get {  return _rigidbody.velocity.magnitude;} }
 
     private void Awake()
@@ -44,7 +40,22 @@ public class Wheel_Drive : MonoBehaviour
     void Start()
     {
         _rigidbody.centerOfMass = new Vector3(_rigidbody.centerOfMass.x, -0.5f, _rigidbody.centerOfMass.z);
-        characterOriginColliderCenter = characterCollider.center;
+        characterCollider.enabled = false;
+    }
+
+    public void AiHoldCarWalk(float accelerations, float steer)
+    {
+        accelerations = Mathf.Clamp(Mathf.Abs(accelerations), 0.3f, 0.7f);
+        steer = Mathf.Clamp(steer, -1, 1) * maxStreerAngle;
+
+        if (Mathf.Abs(steer) > 0.1f)
+        {
+            Quaternion deltaRotation = Quaternion.Euler(0, steer * rotationSpeed * Time.deltaTime, 0);
+            _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
+        }
+        Vector3 forwardMovement = HoldCarTransform.forward * accelerations * moveSpeed * Time.deltaTime;
+        //Debug.Log(forwardMovement);
+        _rigidbody.MovePosition(_rigidbody.position + forwardMovement);
     }
 
     public void Drive(float accelerations, float steer, float brake)
@@ -119,8 +130,13 @@ public class Wheel_Drive : MonoBehaviour
     public void SwitchModeCollider(bool state)
     {
         {
-            carCollider.enabled = !state; 
-            characterCollider.center = state ? new Vector3(0, 0, -0.08008471f) : characterOriginColliderCenter;
+            if (state)
+            {
+                _rigidbody.velocity = Vector3.zero;
+                _rigidbody.angularVelocity = Vector3.zero;
+            }
+            carCollider.enabled = !state;
+            characterCollider.enabled = state;
 
             for (int i = 0; i < 4; i++)
             {

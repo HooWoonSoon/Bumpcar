@@ -8,9 +8,8 @@ public class Player_Controller : Entity
     private Entity entity;
     private Game_Manager manager;
     public Animator animator { get; private set; }
-    private bool LampActive = false;
-    private bool SwitchMode = false;
-
+    private bool lampActive = false;
+    private bool switchMode = false;
     #region State
     public PlayerOrAi_StateMachine stateMachine {  get; private set; } 
     public Player_idleState idleState { get; private set; }
@@ -40,12 +39,12 @@ public class Player_Controller : Entity
     {
         base.Start();
         manager = FindAnyObjectByType<Game_Manager>();
-        driveComponent.SetActive(!SwitchMode);
-        walkComponent.SetActive(SwitchMode);
+        driveComponent.SetActive(!switchMode);
+        walkComponent.SetActive(switchMode);
         animator = GetComponentInChildren<Animator>();
         stateMachine.Initialize(idleState);;
         this.drive = GetComponent<Wheel_Drive>();
-        drive.SetLampActivate(LampActive);
+        drive.SetLampActivate(lampActive);
         currentIndex = SearchIndex();
     }
     private int SearchIndex()
@@ -60,7 +59,7 @@ public class Player_Controller : Entity
         horizontalInput = Input.GetAxis("Horizontal");
         JumpOrBreakInput = Input.GetAxis("Jump");
 
-        if (SwitchMode == false)
+        if (switchMode == false)
         {
             drive.Drive(verticalInput, horizontalInput, JumpOrBreakInput);
         }
@@ -73,15 +72,15 @@ public class Player_Controller : Entity
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            LampActive = !LampActive;
-            drive.SetLampActivate(LampActive);
+            lampActive = !lampActive;
+            drive.SetLampActivate(lampActive);
         }
         else if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            SwitchMode = !SwitchMode;
-            drive.SwitchModeCollider(SwitchMode);
-            driveComponent.SetActive(!SwitchMode);
-            walkComponent.SetActive(SwitchMode);
+            switchMode = !switchMode;
+            drive.SwitchModeCollider(switchMode);
+            driveComponent.SetActive(!switchMode);
+            walkComponent.SetActive(switchMode);
             animator = GetComponentInChildren<Animator>();
         }
     }
