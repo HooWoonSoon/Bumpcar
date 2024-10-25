@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player_Controller : Entity
 {
-    private Wheel_Drive drive;
+    [HideInInspector] public Wheel_Drive drive;
     private Entity entity;
     private Game_Manager manager;
     public Animator animator { get; private set; }
@@ -34,7 +34,6 @@ public class Player_Controller : Entity
         turnLeftState = new Player_TurnLeftState(this, stateMachine, "TurnLeft");
         turnRightState = new Player_TurnRightState(this, stateMachine, "TurnRight");
     }
-
     protected override void Start()
     {
         base.Start();

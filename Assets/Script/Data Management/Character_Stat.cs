@@ -10,11 +10,13 @@ public class Character_Stat
     protected float gameDuration;
     protected int playerSpawnCount;
     protected bool isFinished;
+    protected Vector3 lastCheckpoint;
 
-    public Character_Stat(bool _isAI, string _nicknames)
+    public Character_Stat(bool _isAI, string _nicknames, Vector3 _currentCheckpoint)
     {
         nicknames = _nicknames;
         isAi = _isAI;
+        lastCheckpoint = _currentCheckpoint;
         starCount = 0;
         gameDuration = 0;
         playerSpawnCount = 0;
@@ -36,6 +38,11 @@ public class Character_Stat
         get { return playerSpawnCount; }
     }
 
+    public Vector3 LastCheckpoint
+    {
+        get { return lastCheckpoint; }
+    }
+
     public void Finish() => isFinished = true;
 
     public void Death()
@@ -51,6 +58,10 @@ public class Character_Stat
         }
     }
 
+    public void NewSpawnPosition(Vector3 currentPosition)
+    {
+        lastCheckpoint = currentPosition;
+    }
     public void Point()
     {
         starCount++;
@@ -58,6 +69,7 @@ public class Character_Stat
 
     public override string ToString()
     {
-        return $"Player:,{nicknames}, Is AI: {isAi}, Stars: {starCount}, Duration: {gameDuration}, Spawn Count: {playerSpawnCount}, Finished {isFinished}";
+        return $"Player:,{nicknames}, Is AI: {isAi}, Stars: {starCount}, Duration: {gameDuration}, " +
+            $"Spawn Count: {playerSpawnCount}, CurrentSpawnPosition: {lastCheckpoint} Finished {isFinished}";
     }
 }

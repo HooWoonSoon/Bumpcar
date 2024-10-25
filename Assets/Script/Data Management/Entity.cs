@@ -9,6 +9,7 @@ public class Entity : MonoBehaviour
 
     public int currentIndex { get; protected set; }
     protected int characterIndex;
+    public GameObject carBody;
 
     protected virtual void Awake()
     {
@@ -25,10 +26,20 @@ public class Entity : MonoBehaviour
         characterIndex = index;
     }
 
+    public void UpdatePosition(int currentIndex, Vector3 currentPosition)
+    {
+        gameData.GetIndexUpdateSpawnPosition(currentIndex, currentPosition);
+        gameData.CheckList();
+    }
     public void AddPoint(int currentIndex)
     {
         gameData.GetIndexUpdatePoint(currentIndex);
+        gameData.CheckList();
+    }
 
+    public void AddDead(int currentIndex)
+    {
+        gameData.GetIndexUpdateDead(currentIndex);
         gameData.CheckList();
     }
 }

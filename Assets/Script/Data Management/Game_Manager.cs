@@ -1,30 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Game_Manager : MonoBehaviour
 {
-    public List<Entity> player;
+    public List<Entity> entity;
     public float globalTimer;
 
+    private void Awake()
+    {
+        foreach (Entity go in Resources.FindObjectsOfTypeAll<Entity>())
+        {
+            if (!entity.Any(e => e.name == go.name) && go.GetType() == typeof(Entity))
+            entity.Add(go);
+        }
+    }
     private void Start()
     {
-        //foreach (Entity go in Resources.FindObjectsOfTypeAll<Entity>())
-        //{
-        //    player.Add(go);
-        //}
-        for (int i = 0; i < player.Count; i++)
+        for (int i = 0; i < entity.Count; i++)
         {
-            Game_Data.Instance.AddPlayer(player[i].isAI, "Player" + "[" + i.ToString() + "]");
-            player[i].SetPlayer(i);
+            Game_Data.Instance.AddPlayer(entity[i].isAI, "Player" + "[" + i.ToString() + "]", entity[i].carBody.transform.localPosition);
+            entity[i].SetPlayer(i);
+            Game_Data.Instance.CheckList();
         }
     }
     
     public int GetPlayerIndex(Entity entity)
     {
-        for (int i = 0; i < player.Count; i++)
+        for (int i = 0; i < this.entity.Count; i++)
         {
-            if (entity == player[i]) return i;
+            if (entity == this.entity[i]) return i;
         }
         return -1;
     }
@@ -37,7 +43,7 @@ public class Game_Manager : MonoBehaviour
 
     private void SycnTimer()
     {
-        for (int i = 0; i < player.Count;i++) 
+        for (int i = 0; i < entity.Count;i++) 
         {
             Game_Data.Instance.GetIndexUpdateTimer(i, globalTimer);
         }

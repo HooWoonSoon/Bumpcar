@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class PointStar : MonoBehaviour
+public class Checkpoint : MonoBehaviour
 {
     private Entity entity;
 
@@ -8,21 +10,20 @@ public class PointStar : MonoBehaviour
     {
         entity = FindAnyObjectByType<Entity>();
     }
+
     private void OnTriggerEnter(Collider other)
-    {   
+    {
         if (!other.CompareTag("DetectBox"))
         {
             Player_Controller player = other.GetComponentInParent<Player_Controller>();
             Ai_Controller ai = other.GetComponentInParent<Ai_Controller>();
             if (player != null)
             {
-                entity.AddPoint(player.currentIndex);
-                this.gameObject.SetActive(false);
+                entity.UpdatePosition(player.currentIndex, player.carBody.transform.localPosition);
             }
             if (ai != null)
             {
-                entity.AddPoint(ai.currentIndex);
-                this.gameObject.SetActive(false);
+                entity.UpdatePosition(ai.currentIndex, ai.carBody.transform.localPosition);
             }
         }
     }

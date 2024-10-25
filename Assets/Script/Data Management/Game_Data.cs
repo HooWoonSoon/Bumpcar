@@ -16,9 +16,9 @@ public class Game_Data
         characters = new List<Character_Stat>();
     }
 
-    public void AddPlayer(bool IsAi, string nicknames)
+    public void AddPlayer(bool isAi, string nicknames, Vector3 currentSpawnPosition)
     {
-        var newCharacter = new Character_Stat(IsAi, nicknames);
+        var newCharacter = new Character_Stat(isAi, nicknames, currentSpawnPosition);
         characters.Add(newCharacter);
     }
 
@@ -30,6 +30,10 @@ public class Game_Data
         }
     }
 
+    public void GetIndexUpdateSpawnPosition(int index, Vector3 currentPosition)
+    {
+        characters[index].NewSpawnPosition(currentPosition);
+    }
     public void GetIndexUpdateTimer(int index, float time)
     {
         characters[index].Timer(time);
@@ -37,5 +41,10 @@ public class Game_Data
     public void GetIndexUpdatePoint(int index)
     {
         characters[index].Point();
+    }
+
+    public void GetIndexUpdateDead(int index)
+    {
+        characters[index].Death();
     }
 }
