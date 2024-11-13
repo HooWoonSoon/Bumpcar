@@ -27,6 +27,7 @@ public class KnockOut : MonoBehaviour
             if (ai != null)
             {
                 entity.AddDead(ai.currentIndex);
+                ai.ResearchTarget();
                 ai.carBody.transform.localPosition = gameData.characters[ai.currentIndex].LastCheckpoint;
             }
         }

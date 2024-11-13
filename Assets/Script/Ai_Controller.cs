@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -165,5 +166,31 @@ public class Ai_Controller : Entity
                 isJump = false;
             }
         }
+    }
+
+    public void ResearchTarget()
+    {
+        List<(float, int, Vector3)> TotaldistanceToTarget = new List<(float, int, Vector3)>();
+        float distanceToTargetRespawn;
+
+        for (int i = 0; i < circuit.waypoints.Length; i++)
+        {
+            distanceToTargetRespawn = Vector3.Distance(circuit.waypoints[i].transform.position, drive._rigidbody.gameObject.transform.position);
+            TotaldistanceToTarget.Add((distanceToTargetRespawn, i, circuit.waypoints[i].transform.position));
+        }
+
+        TotaldistanceToTarget = TotaldistanceToTarget.OrderBy(d => d.Item1).ToList();
+        currentTackerWayPoint = TotaldistanceToTarget.First().Item2;
+        currentWayPoint = TotaldistanceToTarget.First().Item2;
+        target = circuit.waypoints[currentWayPoint].transform.position;
+
+        if (currentWayPoint <= wayPointNumbers)
+        {
+            nextWayPoint = Mathf.Clamp(currentWayPoint + 1, 0, wayPointNumbers);
+            nextTarget = circuit.waypoints[nextWayPoint].transform.position;
+        }
+
+        tracker.transform.position = circuit.waypoints[currentTackerWayPoint].transform.position;
+        Debug.Log(TotaldistanceToTarget.First().Item1 + "," + TotaldistanceToTarget.First().Item2 + "," + TotaldistanceToTarget.First().Item3);
     }
 }
