@@ -10,8 +10,11 @@ public class Player_Controller : Entity
     public Animator animator { get; private set; }
     private bool lampActive = false;
     private bool switchMode = false;
+
+    public bool canMove = true; // Added canMove variable
+
     #region State
-    public PlayerOrAi_StateMachine stateMachine {  get; private set; } 
+    public PlayerOrAi_StateMachine stateMachine { get; private set; }
     public Player_idleState idleState { get; private set; }
     public Player_MoveState moveState { get; private set; }
     public Player_TurnLeftState turnLeftState { get; private set; }
@@ -41,7 +44,7 @@ public class Player_Controller : Entity
         driveComponent.SetActive(!switchMode);
         walkComponent.SetActive(switchMode);
         animator = GetComponentInChildren<Animator>();
-        stateMachine.Initialize(idleState);;
+        stateMachine.Initialize(idleState); ;
         this.drive = GetComponent<Wheel_Drive>();
         drive.SetLampActivate(lampActive);
         currentIndex = SearchIndex();
@@ -53,6 +56,8 @@ public class Player_Controller : Entity
 
     void Update()
     {
+        if (!canMove) return; // Prevent movement if canMove is false
+
         stateMachine.currentState.Update();
         verticalInput = Input.GetAxis("Vertical");
         horizontalInput = Input.GetAxis("Horizontal");
@@ -64,10 +69,10 @@ public class Player_Controller : Entity
         }
         else
         {
-            drive.HoldCarWalk(verticalInput, horizontalInput, JumpOrBreakInput);   
+            drive.HoldCarWalk(verticalInput, horizontalInput, JumpOrBreakInput);
         }
-        // Inheritance the UpdateState is not similar like Monobevoiur "Update" it just a name, it used to reduced redundancy @Woon Soon ^_^
-        stateMachine.currentState.UpdateStateValue_Non_Ai(horizontalInput, verticalInput, JumpOrBreakInput); 
+
+        stateMachine.currentState.UpdateStateValue_Non_Ai(horizontalInput, verticalInput, JumpOrBreakInput);
 
         if (Input.GetKeyDown(KeyCode.Q))
         {

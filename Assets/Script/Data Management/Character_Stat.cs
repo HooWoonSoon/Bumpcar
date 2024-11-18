@@ -7,7 +7,7 @@ public class Character_Stat
     protected string nicknames;
     protected bool isAi;
     protected int starCount;
-    protected float gameDuration;
+    public float gameDuration;
     protected int playerSpawnCount;
     protected bool isFinished;
     protected Vector3 lastCheckpoint;
