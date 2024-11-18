@@ -50,7 +50,7 @@ public class Wheel_Drive : MonoBehaviour
 
         if (Mathf.Abs(steer) > 0.1f)
         {
-            Quaternion deltaRotation = Quaternion.Euler(0, steer * rotationSpeed * Time.deltaTime, 0);
+            Quaternion deltaRotation = Quaternion.Euler(0, steer * Time.deltaTime, 0);
             _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
         Vector3 forwardMovement = HoldCarTransform.forward * accelerations * moveSpeed * Time.deltaTime;

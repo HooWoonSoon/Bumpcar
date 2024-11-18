@@ -17,6 +17,7 @@ public class Ai_DetectedRockPlane : MonoBehaviour
         {
             ai.switchMode = true;
             ai.animator = ai.walkComponent.GetComponent<Animator>();
+            ai.stateMachine.Initialize(ai.idleState);
             ai.drive.SwitchModeCollider(ai.switchMode);
             ai.driveComponent.SetActive(!ai.switchMode);
             ai.walkComponent.SetActive(ai.switchMode);
@@ -29,6 +30,7 @@ public class Ai_DetectedRockPlane : MonoBehaviour
         {
             ai.switchMode = false;
             ai.animator = ai.driveComponent.GetComponent<Animator>();
+            ai.stateMachine.Initialize(ai.idleState);
             ai.drive.SwitchModeCollider(ai.switchMode);
             ai.driveComponent.SetActive(!ai.switchMode);
             ai.walkComponent.SetActive(ai.switchMode);

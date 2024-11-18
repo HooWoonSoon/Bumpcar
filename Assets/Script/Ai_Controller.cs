@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class Ai_Controller : Entity
 {
     public Circuit circuit;
-    public Wheel_Drive drive {  get; private set; }
+    public Wheel_Drive drive { get; private set; }
     private DayNightCycle dayLight;
     public float steeringSensitivity = 0.01f;
+    public float brakingSensitivity = 0.9f;
     public float accelerationSensitivity = 0.3f;
     private Vector3 target;
     private Vector3 nextTarget;
@@ -28,10 +30,17 @@ public class Ai_Controller : Entity
     public GameObject driveComponent;
     public GameObject walkComponent;
 
+    #region Detection
+    private float distanceOstacle;
+    [SerializeField] private Transform[] raysTranform;
+    [SerializeField] private float rayDistance = 9f;
+    [SerializeField] private LayerMask wallMask;
+    #endregion
+
     #region Drive internal
-    public float steer {  get; private set; }
+    public float steer { get; private set; }
     public float acceleration { get; private set; }
-    public float brake {  get; private set; }
+    public float brake { get; private set; }
     #endregion
 
     [HideInInspector] public bool switchMode = false;
@@ -85,7 +94,7 @@ public class Ai_Controller : Entity
 
         tracker.transform.LookAt(circuit.waypoints[currentTackerWayPoint].transform.position);
         tracker.transform.Translate(0, 0, 1f);
-        
+
         if (Vector3.Distance(tracker.transform.position, circuit.waypoints[currentTackerWayPoint].transform.position) < 1f)
         {
             currentTackerWayPoint++;
@@ -104,7 +113,7 @@ public class Ai_Controller : Entity
         //RockPlaneDetected();
         Vector3 localTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(target);
         Vector3 nextLocalTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(nextTarget);
-        float distanceTotarget = Vector3.Distance(target,drive._rigidbody.gameObject.transform.position);
+        float distanceTotarget = Vector3.Distance(target, drive._rigidbody.gameObject.transform.position);
 
         float targetAngle = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
         float nextTargetAngle = Mathf.Atan2(nextLocalTarget.x, nextLocalTarget.z) * Mathf.Rad2Deg;
@@ -112,11 +121,20 @@ public class Ai_Controller : Entity
         steer = Mathf.Clamp(targetAngle * steeringSensitivity, -1, 1) * Mathf.Sign(drive.currentSpeed);
 
         float distanceFactor = distanceTotarget / totalDistanceToTarget;
-        
+
+        float corner = Mathf.Clamp(targetAngle, 0, 90f);
+        float cornerFactor = corner / 90f;
+
         float speedFactor = drive.currentSpeed / drive.maxSpeed;
 
         acceleration = Mathf.Lerp(accelerationSensitivity, 1, distanceFactor);
-        brake = Mathf.Lerp(-1 -Mathf.Abs(nextTargetAngle) , 1 + speedFactor, 1 - distanceFactor);
+        brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1 + speedFactor, 1 - distanceFactor);
+        if (corner > 10 && speedFactor > 0.1f)
+            brake = Mathf.Lerp(0, 1 + speedFactor * brakingSensitivity, 1 - cornerFactor);
+
+        if (corner > 20 && speedFactor > 0.2f)
+            acceleration = Mathf.Lerp(0, 1 * accelerationSensitivity, 1 - cornerFactor);
+
         if (Mathf.Abs(nextTargetAngle) > 20)
         {
             brake += 0.8f;
@@ -130,15 +148,16 @@ public class Ai_Controller : Entity
         }
 
         //Debug.Log("Brake: " +  brake + "Steer:" + steer + "Speed:" + drive._rigidbody.velocity.magnitude + "Acceleration:" + acceleration);
+        RaycastToObject();
 
         if (switchMode == false)
         {
-            drive.Drive(acceleration,steer,brake);
+            drive.Drive(acceleration, steer, brake);
             //Debug.Log(steer);
         }
         else
         {
-            drive.AiHoldCarWalk(acceleration,steer);
+            drive.AiHoldCarWalk(acceleration, steer);
         }
         stateMachine.currentState.UpdateStateValue_Ai(acceleration, steer, brake);
 
@@ -156,7 +175,7 @@ public class Ai_Controller : Entity
                 nextWayPoint = Mathf.Clamp(currentWayPoint + 1, 0, wayPointNumbers);
                 nextTarget = circuit.waypoints[nextWayPoint].transform.position;
             }
-            
+
             if (drive._rigidbody.gameObject.transform.InverseTransformPoint(target).y > 5)
             {
                 isJump = true;
@@ -164,6 +183,34 @@ public class Ai_Controller : Entity
             else
             {
                 isJump = false;
+            }
+        }
+    }
+
+    private void RaycastToObject()
+    {
+        for (int i = 0; i < raysTranform.Length; i++)
+        {
+            RaycastHit[] raycastHits = Physics.RaycastAll(raysTranform[i].transform.position, raysTranform[i].forward, rayDistance, wallMask);
+            foreach (RaycastHit obstacle in raycastHits)
+            {
+                distanceOstacle = Vector3.Distance(raysTranform[i].transform.position, obstacle.transform.position);
+                Debug.Log(obstacle.collider.name + ":" + distanceOstacle);
+
+                if (distanceOstacle <= 8f && acceleration >= 0)
+                {
+                    brake = Mathf.Lerp(0, 1 + drive.currentSpeed / drive.maxSpeed * brakingSensitivity, 1 - rayDistance / distanceOstacle);
+                }
+                
+                if (distanceOstacle <= 5.5f)
+                {
+                    if (drive.currentSpeed > 0)
+                    {
+                        acceleration = -acceleration * 0.5f;  
+                        steer = -steer;  
+                        return;
+                    }
+                }
             }
         }
     }
@@ -192,5 +239,13 @@ public class Ai_Controller : Entity
 
         tracker.transform.position = circuit.waypoints[currentTackerWayPoint].transform.position;
         Debug.Log(TotaldistanceToTarget.First().Item1 + "," + TotaldistanceToTarget.First().Item2 + "," + TotaldistanceToTarget.First().Item3);
+    }
+
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < raysTranform.Length; i++)
+        {
+            Gizmos.DrawLine(raysTranform[i].position, raysTranform[i].position + raysTranform[i].forward * rayDistance);
+        }
     }
 }
