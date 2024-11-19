@@ -10,7 +10,7 @@ public class Wheel_Drive : MonoBehaviour
     [SerializeField] private WheelCollider[] _wheelCollider;
     [SerializeField] private float torque = 80f;
     [SerializeField] private float maxStreerAngle = 30f;
-    [SerializeField] private float maxBrakeTorque =500f;
+    [SerializeField] private float maxBrakeTorque = 500f;
     [SerializeField] private GameObject[] Wheels;
     [SerializeField] private GameObject[] Lamp;
     public float maxSpeed = 150f;
@@ -31,7 +31,7 @@ public class Wheel_Drive : MonoBehaviour
     [SerializeField] private float groundCheckDistance;
     [SerializeField] LayerMask ground;
 
-    public float currentSpeed { get {  return _rigidbody.velocity.magnitude;} }
+    public float currentSpeed { get { return _rigidbody.velocity.magnitude; } }
 
     private void Awake()
     {
@@ -50,7 +50,7 @@ public class Wheel_Drive : MonoBehaviour
 
         if (Mathf.Abs(steer) > 0.1f)
         {
-            Quaternion deltaRotation = Quaternion.Euler(0, steer * rotationSpeed * Time.deltaTime, 0);
+            Quaternion deltaRotation = Quaternion.Euler(0, steer * Time.deltaTime, 0);
             _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
         Vector3 forwardMovement = HoldCarTransform.forward * accelerations * moveSpeed * Time.deltaTime;
@@ -67,9 +67,9 @@ public class Wheel_Drive : MonoBehaviour
 
         thrustTorque = Mathf.Clamp(thrustTorque, -maxSpeed, maxSpeed);
         for (int i = 0; i < 4; i++)
-        {         
+        {
             _wheelCollider[i].motorTorque = thrustTorque;
-   
+
             if (i < 2)
             {
                 _wheelCollider[i].steerAngle = steer;
@@ -140,7 +140,7 @@ public class Wheel_Drive : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                _wheelCollider[i].enabled = !state; 
+                _wheelCollider[i].enabled = !state;
             }
         }
     }
