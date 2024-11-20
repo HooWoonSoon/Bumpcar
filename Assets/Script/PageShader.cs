@@ -27,13 +27,14 @@ public class PageShader : MonoBehaviour
 
     void Update()
     {
+        int controlPage = pageController.currentPage;
         foreach (GameObject ui in uis)
         {
-            if (pageInstance.GetFloat("_Angle") <= 0 && pageIndex == pageController.currentPage)
+            if (pageInstance.GetFloat("_Angle") <= 0 && pageIndex == controlPage)
             {
                 ui.SetActive(true);
             }
-            else if (pageIndex != pageController.currentPage)
+            else if (pageIndex != controlPage)
             {
                 ui.SetActive(false);
             }
