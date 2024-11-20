@@ -1,36 +1,39 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class PageController : MonoBehaviour
 {
-    private List<PageShader> images;
+    public List<PageShader> images;
     private Vector3 initialMousePosition;
     private Vector3 currentMousePostion;
     private float distanceMove;
     private bool isFlipingFoward;
     [SerializeField] private float releaseduration = 300f;
-    private int currentPage;
+    [SerializeField] private float sensitivity = 2f;
+    public int currentPage { get; private set; }
     private float currentAngle;
-    void Awake()
-    {
-        images = new List<PageShader>();
-
-        foreach (var go in Resources.FindObjectsOfTypeAll<PageShader>())
-        {
-            if (!images.Any(e => e.name == go.name))
-                images.Add(go);
-        }
-    }
+   
 
     private void Start()
     {
-        currentPage = 0;
+
     }
 
     private void Update()
     {
+        for (int i = 0; i < images.Count; i++)
+        {
+            if (i == currentPage)
+                images[i].transform.localPosition = new Vector3(0, 0, 0); 
+            else if (i < currentPage)
+                images[i].transform.localPosition = new Vector3(0, 0, -0.01f * (currentPage - i)); // page front change to back
+            else
+                images[i].transform.localPosition = new Vector3(0, 0, 0.01f * (currentPage - i)); // senquene front to back
+        }
+
         Vector3 mousePosition = Input.mousePosition;
         mousePosition.z = Camera.main.nearClipPlane;
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -39,9 +42,9 @@ public class PageController : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             currentMousePostion = Camera.main.ScreenToWorldPoint(mousePosition);
-            distanceMove = initialMousePosition.x - currentMousePostion.x;
+            distanceMove = (initialMousePosition.x - currentMousePostion.x) * sensitivity;
 
-            if (distanceMove > 0 && currentPage < images.Count)
+            if (distanceMove > 0 && currentPage < images.Count - 1)
             {
                 images[currentPage].pageInstance.SetFloat("_Angle", Mathf.Lerp(0, 180, Mathf.Abs(distanceMove)));
                 isFlipingFoward = true;
@@ -55,7 +58,7 @@ public class PageController : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            if (isFlipingFoward && currentPage < images.Count)
+            if (isFlipingFoward && currentPage < images.Count - 1)
             {
                 currentAngle = images[currentPage].pageInstance.GetFloat("_Angle");
                 if (currentAngle >= 65)

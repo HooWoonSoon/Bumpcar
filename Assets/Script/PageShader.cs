@@ -6,19 +6,43 @@ using UnityEngine.UIElements;
 public class PageShader : MonoBehaviour
 {
     private Material pageMaterial;
+    [SerializeField] private Texture2D frontTexture;
+    [SerializeField] private Texture2D backTexture;
+    private PageController pageController;
+    [SerializeField] private List<GameObject> uis;
+    private int pageIndex;
     public Material pageInstance { get; set; }
     void Start()
     {
         pageMaterial = GetComponent<Renderer>().material;
         pageInstance = new Material(pageMaterial);
         GetComponent<Renderer>().material = pageInstance;
+
+        pageInstance.SetTexture("_FrontTex",frontTexture);
+        pageInstance.SetTexture("_BackTex", backTexture);
+        pageController = FindObjectOfType<PageController>();
+
+        pageIndex = pageController.images.FindIndex(image => image == this);
     }
 
     void Update()
     {
-        if (pageInstance.GetFloat("_Angle") > 65)
+        foreach (GameObject ui in uis)
         {
-            Debug.Log("Angle is greater than 90");
+            if (pageInstance.GetFloat("_Angle") <= 0 && pageIndex == pageController.currentPage)
+            {
+                ui.SetActive(true);
+            }
+            else if (pageIndex != pageController.currentPage)
+            {
+                ui.SetActive(false);
+            }
+            else if (pageInstance.GetFloat("_Angle") > 65)
+            {
+                ui.SetActive(false);
+            }
+            
         }
+        
     }
 }

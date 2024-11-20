@@ -6,6 +6,7 @@ public class Game_Data
 {
     public static Game_Data Instance {  get; private set; }
     public List<Character_Stat> characters {  get; private set; }
+    public int aiCountForLevel1 { get; set; }
 
     static Game_Data()
     {
