@@ -15,7 +15,6 @@ public class Game_Manager : MonoBehaviour
             if (!entity.Any(e => e.name == go.name) && go.GetType() == typeof(Entity))
             entity.Add(go);
         }
-        Debug.Log(Game_Data.Instance.aiCountForLevel1);
     }
     private void Start()
     {

@@ -16,13 +16,6 @@ public class PageSetup : MonoBehaviour
         StartCoroutine(LoadLevel(currentLevelindex));
     }
 
-    public void AddAiButton()
-    {
-        aiCount++;
-        Game_Data.Instance.aiCountForLevel1 = aiCount;
-        Debug.Log(aiCount.ToString());
-    }
-
     private IEnumerator LoadLevel(int currentLevelindex)
     {
         loadScreen.SetActive(true);
