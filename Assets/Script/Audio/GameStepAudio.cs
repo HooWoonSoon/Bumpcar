@@ -7,11 +7,17 @@ public class GameStepAudio : MonoBehaviour
     [SerializeField] private AudioSource[] sfx;
     [SerializeField] private AudioSource bgm;
 
-    private int soundIndex;
-
     private void Start()
     {
         bgm.Play();
+
+        foreach (var source in sfx)
+        {
+            if (source.clip.loadState != AudioDataLoadState.Loaded)
+            {
+                source.clip.LoadAudioData();
+            }
+        }
     }
 
     public void PlaySFX(int _sfxIndex)

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -30,20 +30,18 @@ public class PageShader : MonoBehaviour
         int controlPage = pageController.currentPage;
         foreach (GameObject ui in uis)
         {
-            if (pageInstance.GetFloat("_Angle") <= 0 && pageIndex == controlPage)
+            if (!pageController.isFlipping)
             {
-                ui.SetActive(true);
+                if (pageIndex == controlPage)
+                {
+                    ui.SetActive(true);
+                    Debug.Log("Work");
+                }
+                else
+                    ui.SetActive(false);
             }
-            else if (pageIndex != controlPage)
-            {
+            else
                 ui.SetActive(false);
-            }
-            else if (pageInstance.GetFloat("_Angle") > 65)
-            {
-                ui.SetActive(false);
-            }
-            
         }
-        
     }
 }

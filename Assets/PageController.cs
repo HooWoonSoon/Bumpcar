@@ -7,9 +7,10 @@ public class PageController : MonoBehaviour
     public List<PageShader> images;
     private bool flipFoward;
     [SerializeField] private float releaseduration = 300f;
+    [SerializeField] private GameStepAudio gameStepAudio;
     public int currentPage { get; private set; }
     private float currentAngle;
-    private bool isFlipping;
+    public bool isFlipping { get; private set; }
 
     private void Start()
     {
@@ -20,6 +21,7 @@ public class PageController : MonoBehaviour
     {
         if (!isFlipping && currentPage < images.Count - 1)
         {
+            gameStepAudio.PlaySFX(0);
             flipFoward = true;
             isFlipping = true;
             StartCoroutine(SmoothTransition(0, 180));
@@ -30,6 +32,7 @@ public class PageController : MonoBehaviour
     {
         if (!isFlipping && currentPage > 0)
         {
+            gameStepAudio.PlaySFX(0);
             flipFoward = false;
             isFlipping = true;
             StartCoroutine(SmoothTransition(180, 0));
@@ -76,7 +79,7 @@ public class PageController : MonoBehaviour
             if (i == currentPage)
                 images[i].transform.localPosition = new Vector3(0, 0, 0);
             else if (i < currentPage)
-                images[i].transform.localPosition = new Vector3(0, 0, -0.01f * (currentPage - i)); // page front change to back
+                images[i].transform.localPosition = new Vector3(0,  -0.01f * (currentPage - i)); // page front change to back
             else
                 images[i].transform.localPosition = new Vector3(0, 0, 0.01f * (currentPage - i)); // senquene front to back
         }
