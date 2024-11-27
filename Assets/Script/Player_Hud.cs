@@ -2,23 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System;
 
 public class Player_Hud : MonoBehaviour
 {
     private Game_Data gameData;
     private Game_Manager gameManager;
+    private Player_Controller player;
 
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI spawnTimeText;
     [SerializeField] private TextMeshProUGUI starPoint;
+    [SerializeField] private SpriteRenderer speedBooster;
     
     private float elapsedTime;
     
     void Start()
     {
-        gameManager = FindAnyObjectByType<Game_Manager>();
+        gameManager = FindObjectOfType<Game_Manager>();
         gameData = Game_Data.Instance;
+        player = FindObjectOfType<Player_Controller>();
     }
     
     void Update()
@@ -36,5 +38,21 @@ public class Player_Hud : MonoBehaviour
                 spawnTimeText.text = player.PlayerSpawnCount.ToString();
             }
         }
+
+        float alpha = 1f;
+
+        if (player.timer <= 2f && player.timer > 0)
+            alpha = Mathf.PingPong(Time.time * 5f, 1f);  // Flashing effect
+        else if (player.timer <= 0)
+            alpha = 0f;
+
+        SetSpeedBoosterAlpha(alpha); // Update the icon's alpha transparency
+    }
+
+    private void SetSpeedBoosterAlpha(float alpha)
+    {
+        Color currentColor = speedBooster.color;
+        currentColor.a = alpha;
+        speedBooster.color = currentColor;
     }
 }

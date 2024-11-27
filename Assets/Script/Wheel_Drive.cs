@@ -8,7 +8,7 @@ public class Wheel_Drive : MonoBehaviour
 {
     [Header("Drive")]
     [SerializeField] private WheelCollider[] _wheelCollider;
-    [SerializeField] private float torque = 80f;
+    public float torque = 80f;
     [SerializeField] private float maxStreerAngle = 30f;
     [SerializeField] private float maxBrakeTorque = 500f;
     [SerializeField] private GameObject[] Wheels;

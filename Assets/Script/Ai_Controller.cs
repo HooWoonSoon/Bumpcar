@@ -10,7 +10,6 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class Ai_Controller : Entity
 {
     public Circuit circuit;
-    public Wheel_Drive drive { get; private set; }
     private DayNightCycle dayLight;
     public float steeringSensitivity = 0.01f;
     public float brakingSensitivity = 0.9f;

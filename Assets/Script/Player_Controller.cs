@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player_Controller : Entity
 {
-    [HideInInspector] public Wheel_Drive drive;
     private Entity entity;
     private Game_Manager manager;
     public Animator animator { get; private set; }
