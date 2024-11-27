@@ -35,7 +35,6 @@ public class PageShader : MonoBehaviour
                 if (pageIndex == controlPage)
                 {
                     ui.SetActive(true);
-                    Debug.Log("Work");
                 }
                 else
                     ui.SetActive(false);

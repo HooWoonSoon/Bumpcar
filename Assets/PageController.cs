@@ -77,11 +77,11 @@ public class PageController : MonoBehaviour
         for (int i = 0; i < images.Count; i++)
         {
             if (i == currentPage)
-                images[i].transform.localPosition = new Vector3(0, 0, 0);
+                images[i].transform.localPosition = new Vector3(transform.position.x, 0, 0);
             else if (i < currentPage)
-                images[i].transform.localPosition = new Vector3(0,  -0.01f * (currentPage - i)); // page front change to back
+                images[i].transform.localPosition = new Vector3(transform.position.x,0,  -0.01f * (currentPage - i)); // page front change to back
             else
-                images[i].transform.localPosition = new Vector3(0, 0, 0.01f * (currentPage - i)); // senquene front to back
+                images[i].transform.localPosition = new Vector3(transform.position.x, 0, 0.01f * (currentPage - i)); // senquene front to back
         }
     }
 }
