@@ -37,6 +37,8 @@ public class Ai_Controller : Entity
 
     private bool isReversing = false;
 
+    private float lastTimeMoving = 0;
+
     private GameObject tracker;
     private int currentTackerWayPoint = 0;
     private float lookAhead = 10;
@@ -126,13 +128,30 @@ public class Ai_Controller : Entity
         ProgressTracker();
         IsCarLight();
         RandomPeronality();
-        //RockPlaneDetected();
-        Vector3 localTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(target);
+
+        if (drive._rigidbody.velocity.magnitude > 0.01f)
+            lastTimeMoving = Time.time;
+        //Debug.Log(drive._rigidbody.velocity.magnitude);
+
+        if (Time.time > lastTimeMoving + 4)
+        {
+            ResearchTarget();
+            carBody.transform.localPosition = gameData.characters[currentIndex].LastCheckpoint;
+        }
+        
+        Vector3 localTarget;
         Vector3 nextLocalTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(nextTarget);
         float distanceTotarget = Vector3.Distance(target, drive._rigidbody.gameObject.transform.position);
 
-        float targetAngle = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
+        float targetAngle;
         float nextTargetAngle = Mathf.Atan2(nextLocalTarget.x, nextLocalTarget.z) * Mathf.Rad2Deg;
+
+        if (Time.time < drive._rigidbody.GetComponent<Ai_AvoidDetection>().avoidTime)
+            localTarget = tracker.transform.right * drive._rigidbody.GetComponent<Ai_AvoidDetection>().avoidPath;
+        else
+            localTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(target);
+
+        targetAngle = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
 
         float distanceFactor = distanceTotarget / totalDistanceToTarget;
 
