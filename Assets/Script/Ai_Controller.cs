@@ -29,6 +29,10 @@ public class Ai_Controller : Entity
     private float totalDistanceToTarget;
     private bool isJump;
 
+    [Header("Collect Item Range")]
+    [SerializeField] private float detectItemRange;
+    private bool isTargetingItem;
+
     #region Ai Personality
     [SerializeField] private Personality personality;
     [SerializeField] private float personalityDuration = 8f;
@@ -128,10 +132,11 @@ public class Ai_Controller : Entity
         ProgressTracker();
         IsCarLight();
         RandomPeronality();
+        TendToStarPoint();
 
-        if (drive._rigidbody.velocity.magnitude > 0.01f)
+        if (drive._rigidbody.velocity.magnitude > 0.001f || isFreeze)
             lastTimeMoving = Time.time;
-        //Debug.Log(drive._rigidbody.velocity.magnitude);
+        Debug.Log(drive._rigidbody.velocity.magnitude);
 
         if (Time.time > lastTimeMoving + 4)
         {
@@ -173,19 +178,22 @@ public class Ai_Controller : Entity
                 case Personality.Aggresive:
                     acceleration = Mathf.Lerp(accelerationSensitivity * 1.2f, 1.2f, distanceFactor);
                     brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1.5f + speedFactor, 1 - distanceFactor);
-                    steer = Mathf.Clamp(targetAngle * steeringSensitivity * 1.5f, -1, 1) * Mathf.Sign(drive.currentSpeed);
+                    if (!isTargetingItem)
+                        steer = Mathf.Clamp(targetAngle * steeringSensitivity * 1.5f, -1, 1) * Mathf.Sign(drive.currentSpeed);
                     break;
 
                 case Personality.Conservative:
                     acceleration = Mathf.Lerp(accelerationSensitivity * 0.7f, 0.7f, distanceFactor);
                     brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1.0f + speedFactor, 1 - distanceFactor);
-                    steer = Mathf.Clamp(targetAngle * steeringSensitivity * 0.8f, -1, 1) * Mathf.Sign(drive.currentSpeed);
+                    if (!isTargetingItem)
+                        steer = Mathf.Clamp(targetAngle * steeringSensitivity * 0.8f, -1, 1) * Mathf.Sign(drive.currentSpeed);
                     break;
 
                 case Personality.Balanced:
                     acceleration = Mathf.Lerp(accelerationSensitivity, 1, distanceFactor);
                     brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1 + speedFactor, 1 - distanceFactor);
-                    steer = Mathf.Clamp(targetAngle * steeringSensitivity, -1, 1) * Mathf.Sign(drive.currentSpeed);
+                    if (!isTargetingItem)
+                        steer = Mathf.Clamp(targetAngle * steeringSensitivity, -1, 1) * Mathf.Sign(drive.currentSpeed);
                     break;
             }
         }
@@ -248,6 +256,52 @@ public class Ai_Controller : Entity
         }
     }
 
+    public void TendToStarPoint()
+    {
+        Collider[] colliders = Physics.OverlapSphere(carBody.transform.position, detectItemRange);
+        float closestDistance = Mathf.Infinity;
+        float targetItemAngle;
+        Vector3 closestItemPosition = Vector3.zero;
+
+        foreach (var item in colliders)
+        {
+            PowerUp powerUp = item.gameObject.GetComponent<PowerUp>();
+            PointStar pointStar = item.gameObject.GetComponent<PointStar>();
+
+            if (powerUp != null)
+            {
+                float distanceToPowerUp = Vector3.Distance(powerUp.transform.position, drive._rigidbody.gameObject.transform.position);
+
+                if (distanceToPowerUp < closestDistance)
+                {
+                    closestDistance = distanceToPowerUp;
+                    closestItemPosition = powerUp.transform.position;
+                }
+                Debug.Log(item.name);
+            }
+            else if (pointStar != null)
+            {
+                float distanceToPointStar = Vector3.Distance(pointStar.transform.position, drive._rigidbody.gameObject.transform.position);
+
+                if (distanceToPointStar < closestDistance)
+                {
+                    closestDistance = distanceToPointStar;
+                    closestItemPosition = pointStar.transform.position;
+                }
+                Debug.Log(item.name);
+            }
+
+            if (closestDistance != Mathf.Infinity) 
+            {
+                isTargetingItem = true;
+                Vector3 localItemTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(closestItemPosition);
+                targetItemAngle = Mathf.Atan2(localItemTarget.x, localItemTarget.z) * Mathf.Rad2Deg;
+                steer = Mathf.Clamp(targetItemAngle * steeringSensitivity, -1, 1) * Mathf.Sign(drive.currentSpeed);
+            }
+            else
+                isTargetingItem = false;
+        }
+    }
     private void RaycastToObject()
     {
         for (int i = 0; i < raysTranform.Length; i++)
@@ -256,7 +310,7 @@ public class Ai_Controller : Entity
             foreach (RaycastHit obstacle in raycastHits)
             {
                 distanceOstacle = Vector3.Distance(raysTranform[i].transform.position, obstacle.transform.position);
-                Debug.Log(obstacle.collider.name + ":" + distanceOstacle);
+                //Debug.Log(obstacle.collider.name + ":" + distanceOstacle);
 
                 if (distanceOstacle <= 8f && acceleration >= 0)
                 {
@@ -328,5 +382,8 @@ public class Ai_Controller : Entity
         {
             Gizmos.DrawLine(raysTranform[i].position, raysTranform[i].position + raysTranform[i].forward * rayDistance);
         }
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(carBody.transform.position, detectItemRange);
     }
 }

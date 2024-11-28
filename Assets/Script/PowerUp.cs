@@ -14,6 +14,8 @@ public class PowerUp : MonoBehaviour
     [SerializeField] private PowerType powerType;
     private void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "DetectBox") return;
+
         Player_Controller player = other.GetComponentInParent<Player_Controller>();
         Ai_Controller ai = other.GetComponentInParent<Ai_Controller>();
         if (player != null)

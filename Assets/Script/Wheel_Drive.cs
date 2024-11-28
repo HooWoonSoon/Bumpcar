@@ -23,7 +23,7 @@ public class Wheel_Drive : MonoBehaviour
     [SerializeField] private Transform HoldCarTransform;
     [SerializeField] private BoxCollider carCollider;
     [SerializeField] BoxCollider characterCollider;
-    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private float jumpForce = 10f;
     private float coolDownTimer;

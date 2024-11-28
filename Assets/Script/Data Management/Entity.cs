@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour
     public GameObject carBody;
     public float timer { get; private set; }
     public PowerType activateType { get; private set; }
+    protected bool isFreeze = false;
 
     protected virtual void Awake()
     {
@@ -50,6 +51,8 @@ public class Entity : MonoBehaviour
     {
         float originalMaxSpeed = drive.maxSpeed;
         float originalTorque = drive.torque;
+        Vector3 originalVelocity = drive._rigidbody.velocity;
+        Vector3 originalAngularVelocity = drive._rigidbody.angularVelocity;
 
         activateType = powerType; 
 
@@ -63,7 +66,9 @@ public class Entity : MonoBehaviour
             case PowerType.Freeze:
                 drive.maxSpeed = 0;
                 drive.torque = 0;
-                drive._rigidbody.isKinematic = true;
+                drive._rigidbody.velocity = Vector3.zero;
+                drive._rigidbody.angularVelocity = Vector3.zero;
+                isFreeze = true;
                 break;
         }
 
