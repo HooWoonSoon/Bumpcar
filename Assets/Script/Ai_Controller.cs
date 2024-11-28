@@ -29,7 +29,13 @@ public class Ai_Controller : Entity
     private float totalDistanceToTarget;
     private bool isJump;
 
+    #region Ai Personality
     [SerializeField] private Personality personality;
+    [SerializeField] private float personalityDuration = 8f;
+    private float timerResetValue;
+    #endregion
+
+    private bool isReversing = false;
 
     private GameObject tracker;
     private int currentTackerWayPoint = 0;
@@ -87,6 +93,7 @@ public class Ai_Controller : Entity
         transform.transform.rotation = drive._rigidbody.gameObject.transform.rotation;
         currentIndex = SearchIndex();
         dayLight = FindAnyObjectByType<DayNightCycle>();
+        timerResetValue = personalityDuration;
     }
     private int SearchIndex()
     {
@@ -118,6 +125,7 @@ public class Ai_Controller : Entity
     {
         ProgressTracker();
         IsCarLight();
+        RandomPeronality();
         //RockPlaneDetected();
         Vector3 localTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(target);
         Vector3 nextLocalTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(nextTarget);
@@ -133,25 +141,34 @@ public class Ai_Controller : Entity
 
         float speedFactor = drive.currentSpeed / drive.maxSpeed;
 
-        switch (personality)
+        if (isReversing)
         {
-            case Personality.Aggresive:
-                acceleration = Mathf.Lerp(accelerationSensitivity * 1.2f, 1.2f, distanceFactor);
-                brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1.5f + speedFactor, 1 - distanceFactor);
-                steer = Mathf.Clamp(targetAngle * steeringSensitivity * 1.5f, -1, 1) * Mathf.Sign(drive.currentSpeed);
-                break;
+            acceleration = Mathf.Lerp(accelerationSensitivity * 1.2f, 1.2f, distanceFactor);
+            brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1.5f + speedFactor, 1 - distanceFactor);
+            steer = Mathf.Clamp(targetAngle * steeringSensitivity * 1.5f, -1, 1) * Mathf.Sign(drive.currentSpeed);
+        }
+        else
+        {
+            switch (personality)
+            {
+                case Personality.Aggresive:
+                    acceleration = Mathf.Lerp(accelerationSensitivity * 1.2f, 1.2f, distanceFactor);
+                    brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1.5f + speedFactor, 1 - distanceFactor);
+                    steer = Mathf.Clamp(targetAngle * steeringSensitivity * 1.5f, -1, 1) * Mathf.Sign(drive.currentSpeed);
+                    break;
 
-            case Personality.Conservative:
-                acceleration = Mathf.Lerp(accelerationSensitivity * 0.7f, 0.7f, distanceFactor);
-                brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1.0f + speedFactor, 1 - distanceFactor);
-                steer = Mathf.Clamp(targetAngle * steeringSensitivity * 0.8f, -1, 1) * Mathf.Sign(drive.currentSpeed);
-                break;
+                case Personality.Conservative:
+                    acceleration = Mathf.Lerp(accelerationSensitivity * 0.7f, 0.7f, distanceFactor);
+                    brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1.0f + speedFactor, 1 - distanceFactor);
+                    steer = Mathf.Clamp(targetAngle * steeringSensitivity * 0.8f, -1, 1) * Mathf.Sign(drive.currentSpeed);
+                    break;
 
-            case Personality.Balanced:
-                acceleration = Mathf.Lerp(accelerationSensitivity, 1, distanceFactor);
-                brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1 + speedFactor, 1 - distanceFactor);
-                steer = Mathf.Clamp(targetAngle * steeringSensitivity, -1, 1) * Mathf.Sign(drive.currentSpeed);
-                break;
+                case Personality.Balanced:
+                    acceleration = Mathf.Lerp(accelerationSensitivity, 1, distanceFactor);
+                    brake = Mathf.Lerp(-1 - Mathf.Abs(nextTargetAngle), 1 + speedFactor, 1 - distanceFactor);
+                    steer = Mathf.Clamp(targetAngle * steeringSensitivity, -1, 1) * Mathf.Sign(drive.currentSpeed);
+                    break;
+            }
         }
 
         if (corner > 10 && speedFactor > 0.1f)
@@ -231,12 +248,32 @@ public class Ai_Controller : Entity
                 {
                     if (drive.currentSpeed > 0)
                     {
+                        isReversing = true;
                         acceleration = -acceleration* 0.5f;
                         steer = -steer;
                         return;
                     }
                 }
             }
+        }
+
+        if (isReversing && drive.currentSpeed <= 0)
+        {
+            isReversing = false;
+            acceleration = 0f; // zero the acceleration when back car
+        }
+    }
+
+    public void RandomPeronality()
+    {
+        if (personalityDuration > 0)
+            personalityDuration -= Time.deltaTime;
+        else
+        {
+            Array values = Enum.GetValues(typeof(Personality));
+            personality = (Personality)values.GetValue(UnityEngine.Random.Range(0, values.Length));
+
+            personalityDuration = timerResetValue;
         }
     }
 

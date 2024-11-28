@@ -13,6 +13,7 @@ public class Wheel_Drive : MonoBehaviour
     [SerializeField] private float maxBrakeTorque = 500f;
     [SerializeField] private GameObject[] Wheels;
     [SerializeField] private GameObject[] Lamp;
+    [SerializeField] private GameObject brakeLight;
     public float maxSpeed = 150f;
     private float changeMaxSpeed;
 
@@ -41,6 +42,8 @@ public class Wheel_Drive : MonoBehaviour
     {
         _rigidbody.centerOfMass = new Vector3(_rigidbody.centerOfMass.x, -0.5f, _rigidbody.centerOfMass.z);
         characterCollider.enabled = false;
+
+        brakeLight.SetActive(false);
     }
 
     public void AiHoldCarWalk(float accelerations, float steer)
@@ -64,6 +67,11 @@ public class Wheel_Drive : MonoBehaviour
         steer = Mathf.Clamp(steer, -1, 1) * maxStreerAngle;
         brake = Mathf.Clamp(brake, 0, 1) * maxBrakeTorque;
         float thrustTorque = accelerations * torque;
+
+        if (brake != 0)
+            brakeLight.SetActive(true);
+        else 
+            brakeLight.SetActive(false);
 
         thrustTorque = Mathf.Clamp(thrustTorque, -maxSpeed, maxSpeed);
         for (int i = 0; i < 4; i++)

@@ -19,6 +19,7 @@ public class Circuit : MonoBehaviour
     void DrawGizmo(bool selected)
     {
         if (selected == false) return;
+
         if (waypoints.Length > 1)
         {
             Vector3 prev = waypoints[0].transform.position;
