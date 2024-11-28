@@ -14,7 +14,7 @@ public class Entity : MonoBehaviour
 
     protected virtual void Awake()
     {
-        
+
     }
 
     protected virtual void Start()

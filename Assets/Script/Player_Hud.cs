@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class Player_Hud : MonoBehaviour
@@ -12,8 +13,8 @@ public class Player_Hud : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI spawnTimeText;
     [SerializeField] private TextMeshProUGUI starPoint;
-    [SerializeField] private SpriteRenderer speedBooster;
-    
+    [SerializeField] private Image speedBooster;
+
     private float elapsedTime;
     
     void Start()
