@@ -14,6 +14,7 @@ public class Player_Hud : MonoBehaviour
     [SerializeField] private TextMeshProUGUI spawnTimeText;
     [SerializeField] private TextMeshProUGUI starPoint;
     [SerializeField] private Image speedBooster;
+    [SerializeField] private Image freeze;
 
     private float elapsedTime;
     
@@ -40,20 +41,33 @@ public class Player_Hud : MonoBehaviour
             }
         }
 
-        float alpha = 1f;
-
-        if (player.timer <= 2f && player.timer > 0)
-            alpha = Mathf.PingPong(Time.time * 5f, 1f);  // Flashing effect
-        else if (player.timer <= 0)
-            alpha = 0f;
-
-        SetSpeedBoosterAlpha(alpha); // Update the icon's alpha transparency
+        SetIconAlpha(speedBooster, 0f);
+        SetIconAlpha(freeze, 0f);
+        if (player.activateType == PowerType.SpeedUp)
+        {
+            SetIconAlpha(speedBooster, CalculateAlpha(player.timer));
+        }
+        else if (player.activateType == PowerType.Freeze)
+        {
+            SetIconAlpha(freeze, CalculateAlpha(player.timer));
+        }
     }
 
-    private void SetSpeedBoosterAlpha(float alpha)
+    private float CalculateAlpha(float timer)
     {
-        Color currentColor = speedBooster.color;
+        if (timer <= 3f && timer > 0)
+            return Mathf.PingPong(Time.time * 5f, 1f); // Flashing effect
+        else if (timer <= 0)
+            return 0f; // Fully transparent
+        return 1f; // Fully visible
+    }
+
+    private void SetIconAlpha(Image icon, float alpha)
+    {
+        if (icon == null) return;
+
+        Color currentColor = icon.color;
         currentColor.a = alpha;
-        speedBooster.color = currentColor;
+        icon.color = currentColor;
     }
 }

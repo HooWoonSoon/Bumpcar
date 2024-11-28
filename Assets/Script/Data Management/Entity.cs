@@ -11,6 +11,7 @@ public class Entity : MonoBehaviour
     protected int characterIndex;
     public GameObject carBody;
     public float timer { get; private set; }
+    public PowerType activateType { get; private set; }
 
     protected virtual void Awake()
     {
@@ -20,6 +21,7 @@ public class Entity : MonoBehaviour
     protected virtual void Start()
     {
         gameData = Game_Data.Instance;
+        activateType = PowerType.None;
     }
 
     public void SetPlayer(int index)
@@ -44,10 +46,26 @@ public class Entity : MonoBehaviour
         gameData.CheckList();
     }
 
-    public IEnumerator PowerUpSpeed(int value, float powerTime)
+    public IEnumerator PowerUpSpeed(int value, float powerTime, PowerType powerType)
     {
-        drive.maxSpeed *= value;
-        drive.torque *= value;
+        float originalMaxSpeed = drive.maxSpeed;
+        float originalTorque = drive.torque;
+
+        activateType = powerType; 
+
+        switch (powerType)
+        {
+            case PowerType.SpeedUp:
+                drive.maxSpeed *= value;
+                drive.torque *= value;
+                break;
+
+            case PowerType.Freeze:
+                drive.maxSpeed = 0;
+                drive.torque = 0;
+                drive._rigidbody.isKinematic = true;
+                break;
+        }
 
         timer = powerTime;
 
@@ -57,7 +75,10 @@ public class Entity : MonoBehaviour
             yield return null;
         }
 
-        drive.maxSpeed /= value;
-        drive.torque /= value;
+        drive.maxSpeed = originalMaxSpeed;
+        drive.torque = originalTorque;
+        drive._rigidbody.isKinematic = false;
+
+        activateType = PowerType.None;
     }
 }
