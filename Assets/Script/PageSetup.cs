@@ -16,6 +16,18 @@ public class PageSetup : MonoBehaviour
         StartCoroutine(LoadLevel(currentLevelindex));
     }
 
+    public void PressButtonLevel2()
+    {
+        int currentLevelindex = 3;
+        StartCoroutine(LoadLevel(currentLevelindex));
+    }
+
+    public void PressButtonLevel3()
+    {
+        int currentLevelindex = 4;
+        StartCoroutine(LoadLevel(currentLevelindex));
+    }
+
     private IEnumerator LoadLevel(int currentLevelindex)
     {
         loadScreen.SetActive(true);
@@ -27,6 +39,7 @@ public class PageSetup : MonoBehaviour
         {
             mascot.transform.Rotate(Vector3.forward);
 
+            progress.color = Color.white;
             progress.text = (operation.progress * 100).ToString() + "%";
 
             if (operation.progress >= 0.9f)
