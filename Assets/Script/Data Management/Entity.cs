@@ -82,7 +82,8 @@ public class Entity : MonoBehaviour
 
         drive.maxSpeed = originalMaxSpeed;
         drive.torque = originalTorque;
-        drive._rigidbody.isKinematic = false;
+        drive._rigidbody.velocity = originalVelocity;
+        drive._rigidbody.angularVelocity = originalAngularVelocity;
 
         activateType = PowerType.None;
     }

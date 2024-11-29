@@ -1,11 +1,8 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 public enum Personality
 {
     Aggresive,
@@ -31,7 +28,10 @@ public class Ai_Controller : Entity
 
     [Header("Collect Item Range")]
     [SerializeField] private float detectItemRange;
+    [SerializeField] private int randomChanceMin = 0; 
+    [SerializeField] private int randomChanceMax = 5;
     private bool isTargetingItem;
+    private Hashtable processedItem = new Hashtable();
 
     #region Ai Personality
     [SerializeField] private Personality personality;
@@ -132,7 +132,7 @@ public class Ai_Controller : Entity
         ProgressTracker();
         IsCarLight();
         RandomPeronality();
-        TendToStarPoint();
+        DetectItem();
 
         if (drive._rigidbody.velocity.magnitude > 0.001f || isFreeze)
             lastTimeMoving = Time.time;
@@ -256,42 +256,39 @@ public class Ai_Controller : Entity
         }
     }
 
-    public void TendToStarPoint()
+    public void DetectItem()
     {
         Collider[] colliders = Physics.OverlapSphere(carBody.transform.position, detectItemRange);
         float closestDistance = Mathf.Infinity;
         float targetItemAngle;
         Vector3 closestItemPosition = Vector3.zero;
 
-        foreach (var item in colliders)
+        foreach (var collider in colliders)
         {
-            PowerUp powerUp = item.gameObject.GetComponent<PowerUp>();
-            PointStar pointStar = item.gameObject.GetComponent<PointStar>();
+            GameObject item = collider.gameObject;
 
-            if (powerUp != null)
+            if (!processedItem.ContainsKey(item))
             {
-                float distanceToPowerUp = Vector3.Distance(powerUp.transform.position, drive._rigidbody.gameObject.transform.position);
+                int randomChance = UnityEngine.Random.Range(randomChanceMin, randomChanceMax);
+                processedItem.Add(item, randomChance);
+            }
 
+            if ((int)processedItem[item] != 0) continue;
+
+            PowerUp powerUp = item.GetComponent<PowerUp>();
+            PointStar pointStar = item.GetComponent<PointStar>();
+
+            if (powerUp != null || pointStar != null)
+            {
+                float distanceToPowerUp = Vector3.Distance(item.transform.position, carBody.transform.position);
                 if (distanceToPowerUp < closestDistance)
                 {
                     closestDistance = distanceToPowerUp;
-                    closestItemPosition = powerUp.transform.position;
+                    closestItemPosition = item.transform.position;
                 }
-                Debug.Log(item.name);
-            }
-            else if (pointStar != null)
-            {
-                float distanceToPointStar = Vector3.Distance(pointStar.transform.position, drive._rigidbody.gameObject.transform.position);
-
-                if (distanceToPointStar < closestDistance)
-                {
-                    closestDistance = distanceToPointStar;
-                    closestItemPosition = pointStar.transform.position;
-                }
-                Debug.Log(item.name);
             }
 
-            if (closestDistance != Mathf.Infinity) 
+            if (closestDistance != Mathf.Infinity)
             {
                 isTargetingItem = true;
                 Vector3 localItemTarget = drive._rigidbody.gameObject.transform.InverseTransformPoint(closestItemPosition);
@@ -302,6 +299,7 @@ public class Ai_Controller : Entity
                 isTargetingItem = false;
         }
     }
+
     private void RaycastToObject()
     {
         for (int i = 0; i < raysTranform.Length; i++)
@@ -382,8 +380,7 @@ public class Ai_Controller : Entity
         {
             Gizmos.DrawLine(raysTranform[i].position, raysTranform[i].position + raysTranform[i].forward * rayDistance);
         }
-
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(carBody.transform.position, detectItemRange);
+        Gizmos.DrawWireSphere(carBody.transform.position, detectItemRange);
     }
 }

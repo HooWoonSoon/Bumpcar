@@ -9,21 +9,20 @@ public class PointStar : MonoBehaviour
         entity = FindAnyObjectByType<Entity>();
     }
     private void OnTriggerEnter(Collider other)
-    {   
-        if (!other.CompareTag("DetectBox"))
+    {
+        if (other.tag == "DetectBox") return;
+
+        Player_Controller player = other.GetComponentInParent<Player_Controller>();
+        Ai_Controller ai = other.GetComponentInParent<Ai_Controller>();
+        if (player != null)
         {
-            Player_Controller player = other.GetComponentInParent<Player_Controller>();
-            Ai_Controller ai = other.GetComponentInParent<Ai_Controller>();
-            if (player != null)
-            {
-                entity.AddPoint(player.currentIndex);
-                this.gameObject.SetActive(false);
-            }
-            if (ai != null)
-            {
-                entity.AddPoint(ai.currentIndex);
-                this.gameObject.SetActive(false);
-            }
+            entity.AddPoint(player.currentIndex);
+            gameObject.SetActive(false);
+        }
+        if (ai != null)
+        {
+            entity.AddPoint(ai.currentIndex);
+            gameObject.SetActive(false);
         }
     }
 }
