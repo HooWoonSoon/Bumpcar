@@ -36,7 +36,7 @@ public class Checkpoint : MonoBehaviour
 
             if (player != null)
             {
-                entity.UpdatePosition(player.currentIndex, player.carBody.transform.localPosition, waypointIndex);
+                entity.UpdatePosition(player.currentIndex, player.carBody.transform.localPosition, waypointIndex, player.carBody.transform.localRotation);
                 if (!playerCheckpoints.Contains(checkpointIndex))
                 {
                     playerCheckpoints.Add(checkpointIndex);
@@ -46,7 +46,7 @@ public class Checkpoint : MonoBehaviour
 
             if (ai != null)
             {
-                entity.UpdatePosition(ai.currentIndex, ai.carBody.transform.localPosition, waypointIndex);
+                entity.UpdatePosition(ai.currentIndex, ai.carBody.transform.localPosition, waypointIndex, ai.carBody.transform.localRotation);
             }
         }
     }

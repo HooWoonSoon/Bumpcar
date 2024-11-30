@@ -30,9 +30,9 @@ public class Game_Data
         }
     }
 
-    public void GetIndexUpdateSpawnPosition(int index, Vector3 currentPosition, int lastWayPoint)
+    public void GetIndexUpdateSpawnPosition(int index, Vector3 currentPosition, int lastWayPoint, Quaternion currentRotation)
     {
-        characters[index].NewSpawnPosition(currentPosition, lastWayPoint);
+        characters[index].NewSpawnPosition(currentPosition, lastWayPoint, currentRotation);
     }
     public void GetIndexUpdateTimer(int index, float time)
     {

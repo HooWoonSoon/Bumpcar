@@ -10,14 +10,15 @@ public class Character_Stat
     public float gameDuration;
     protected int playerSpawnCount;
     protected bool isFinished;
-    protected Vector3 lastCheckpoint;
+    protected Vector3 lastPosition;
+    protected Quaternion lastRotation;
     protected int wayPoint;
 
     public Character_Stat(bool _isAI, string _nicknames, Vector3 _currentCheckpoint)
     {
         nicknames = _nicknames;
         isAi = _isAI;
-        lastCheckpoint = _currentCheckpoint;
+        lastPosition = _currentCheckpoint;
         starCount = 0;
         gameDuration = 0;
         playerSpawnCount = 0;
@@ -39,9 +40,14 @@ public class Character_Stat
         get { return playerSpawnCount; }
     }
 
-    public Vector3 LastCheckpoint
+    public Vector3 LastPosition
     {
-        get { return lastCheckpoint; }
+        get { return lastPosition; }
+    }
+
+    public Quaternion LastRotation
+    {
+        get { return lastRotation; }
     }
 
     public int WayPoint
@@ -64,10 +70,11 @@ public class Character_Stat
         }
     }
 
-    public void NewSpawnPosition(Vector3 currentPosition, int lastWayPoint)
+    public void NewSpawnPosition(Vector3 currentPosition, int lastWayPoint, Quaternion currentRotation)
     {
-        lastCheckpoint = currentPosition;
+        lastPosition = currentPosition;
         wayPoint = lastWayPoint;
+        lastRotation = currentRotation;
     }
     public void Point()
     {
@@ -77,6 +84,6 @@ public class Character_Stat
     public override string ToString()
     {
         return $"Player:,{nicknames}, Is AI: {isAi}, Stars: {starCount}, Duration: {gameDuration}, " +
-            $"Spawn Count: {playerSpawnCount}, CurrentSpawnPosition: {lastCheckpoint} Finished {isFinished}";
+            $"Spawn Count: {playerSpawnCount}, CurrentSpawnPosition: {lastPosition} Finished {isFinished}";
     }
 }

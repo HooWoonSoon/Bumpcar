@@ -30,9 +30,9 @@ public class Entity : MonoBehaviour
         characterIndex = index;
     }
 
-    public void UpdatePosition(int currentIndex, Vector3 currentPosition, int lasWayPoint)
+    public void UpdatePosition(int currentIndex, Vector3 currentPosition, int lasWayPoint, Quaternion rotaotion)
     {
-        gameData.GetIndexUpdateSpawnPosition(currentIndex, currentPosition, lasWayPoint);
+        gameData.GetIndexUpdateSpawnPosition(currentIndex, currentPosition, lasWayPoint, rotaotion);
         gameData.CheckList();
     }
     public void AddPoint(int currentIndex)

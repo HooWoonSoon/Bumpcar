@@ -22,8 +22,8 @@ public class KnockOut : MonoBehaviour
             if (player != null && drive != null)
             {
                 entity.AddDead(player.currentIndex);
-                player.carBody.transform.localPosition = gameData.characters[player.currentIndex].LastCheckpoint;
-                player.carBody.transform.localRotation = Quaternion.Euler(0, player.carBody.transform.localRotation.eulerAngles.y, 0);
+                player.carBody.transform.localPosition = gameData.characters[player.currentIndex].LastPosition;
+                player.carBody.transform.localRotation = gameData.characters[player.currentIndex].LastRotation;
                 drive._rigidbody.velocity = Vector3.zero;
                 drive._rigidbody.angularVelocity = Vector3.zero;
             }
@@ -31,8 +31,8 @@ public class KnockOut : MonoBehaviour
             {
                 entity.AddDead(ai.currentIndex);
                 ai.ResearchTarget();
-                ai.carBody.transform.localPosition = gameData.characters[ai.currentIndex].LastCheckpoint;
-                ai.carBody.transform.localRotation = Quaternion.Euler(0, ai.carBody.transform.localRotation.eulerAngles.y, 0);
+                ai.carBody.transform.localPosition = gameData.characters[ai.currentIndex].LastPosition;
+                ai.carBody.transform.localRotation = gameData.characters[ai.currentIndex].LastRotation;
                 drive._rigidbody.velocity = Vector3.zero;
                 drive._rigidbody.angularVelocity = Vector3.zero;
             }

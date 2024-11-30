@@ -134,14 +134,18 @@ public class Ai_Controller : Entity
         RandomPeronality();
         DetectItem();
 
-        if (drive._rigidbody.velocity.magnitude > 0.001f || isFreeze)
+        if (drive._rigidbody.velocity.magnitude > 0.1f && switchMode == false || isFreeze)
             lastTimeMoving = Time.time;
-        Debug.Log(drive._rigidbody.velocity.magnitude);
+        else if (drive._rigidbody.velocity.magnitude > 0.0001f && switchMode == true || isFreeze)
+            lastTimeMoving = Time.time;
 
-        if (Time.time > lastTimeMoving + 4)
+        //Debug.Log(drive._rigidbody.velocity.magnitude);
+
+        if (Time.time > lastTimeMoving + 7)
         {
             ResearchTarget();
-            carBody.transform.localPosition = gameData.characters[currentIndex].LastCheckpoint;
+            carBody.transform.localPosition = gameData.characters[currentIndex].LastPosition;
+            carBody.transform.localRotation = gameData.characters[currentIndex].LastRotation;
         }
         
         Vector3 localTarget;
