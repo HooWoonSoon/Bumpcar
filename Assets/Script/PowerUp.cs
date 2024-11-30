@@ -20,12 +20,12 @@ public class PowerUp : MonoBehaviour
         Ai_Controller ai = other.GetComponentInParent<Ai_Controller>();
         if (player != null)
         {
-            player.StartCoroutine(player.PowerUpSpeed(2, 6, powerType));
+            player.StartCoroutine(player.PowerUpSpeed(1.5f, 4, powerType));
             gameObject.SetActive(false);
         }
         if (ai != null)
         {
-            ai.StartCoroutine(ai.PowerUpSpeed(2, 6, powerType));
+            ai.StartCoroutine(ai.PowerUpSpeed(2, 4, powerType));
             gameObject.SetActive(false);
         }
     }

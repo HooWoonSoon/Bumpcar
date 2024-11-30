@@ -47,16 +47,14 @@ public class Entity : MonoBehaviour
         gameData.CheckList();
     }
 
-    public IEnumerator PowerUpSpeed(int value, float powerTime, PowerType powerType)
+    public IEnumerator PowerUpSpeed(float value, float powerTime, PowerType powerType)
     {
-        float originalMaxSpeed = drive.maxSpeed;
-        float originalTorque = drive.torque;
         Vector3 originalVelocity = drive._rigidbody.velocity;
         Vector3 originalAngularVelocity = drive._rigidbody.angularVelocity;
 
         activateType = powerType; 
 
-        switch (powerType)
+        switch (activateType)
         {
             case PowerType.SpeedUp:
                 drive._rigidbody.velocity *= value;
