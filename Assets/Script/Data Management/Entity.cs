@@ -59,13 +59,10 @@ public class Entity : MonoBehaviour
         switch (powerType)
         {
             case PowerType.SpeedUp:
-                drive.maxSpeed *= value;
-                drive.torque *= value;
+                drive._rigidbody.velocity *= value;
                 break;
 
             case PowerType.Freeze:
-                drive.maxSpeed = 0;
-                drive.torque = 0;
                 drive._rigidbody.velocity = Vector3.zero;
                 drive._rigidbody.angularVelocity = Vector3.zero;
                 isFreeze = true;
@@ -80,8 +77,6 @@ public class Entity : MonoBehaviour
             yield return null;
         }
 
-        drive.maxSpeed = originalMaxSpeed;
-        drive.torque = originalTorque;
         drive._rigidbody.velocity = originalVelocity;
         drive._rigidbody.angularVelocity = originalAngularVelocity;
 
