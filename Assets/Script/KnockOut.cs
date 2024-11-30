@@ -29,6 +29,7 @@ public class KnockOut : MonoBehaviour
                 entity.AddDead(ai.currentIndex);
                 ai.ResearchTarget();
                 ai.carBody.transform.localPosition = gameData.characters[ai.currentIndex].LastCheckpoint;
+                ai.carBody.transform.localRotation = Quaternion.Euler(0, ai.carBody.transform.localRotation.eulerAngles.y, 0);
             }
         }
     }

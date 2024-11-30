@@ -7,11 +7,24 @@ public class Checkpoint : MonoBehaviour
 
     private static HashSet<int> playerCheckpoints = new HashSet<int>();
 
-    public int checkpointIndex; 
+    public int checkpointIndex;
+    [SerializeField] private GameObject wayPoint;
+    [SerializeField] private Circuit circuit;
+    private int waypointIndex;
 
     private void Start()
     {
         entity = FindAnyObjectByType<Entity>();
+        waypointIndex = -1;
+        
+        for (int i = 0; i < circuit.waypoints.Length; i++)
+        {
+            if (circuit.waypoints[i].gameObject == wayPoint)
+            {
+                waypointIndex = i;
+                break;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -23,7 +36,7 @@ public class Checkpoint : MonoBehaviour
 
             if (player != null)
             {
-                entity.UpdatePosition(player.currentIndex, player.carBody.transform.localPosition);
+                entity.UpdatePosition(player.currentIndex, player.carBody.transform.localPosition, waypointIndex);
                 if (!playerCheckpoints.Contains(checkpointIndex))
                 {
                     playerCheckpoints.Add(checkpointIndex);
@@ -33,7 +46,7 @@ public class Checkpoint : MonoBehaviour
 
             if (ai != null)
             {
-                entity.UpdatePosition(ai.currentIndex, ai.carBody.transform.localPosition);
+                entity.UpdatePosition(ai.currentIndex, ai.carBody.transform.localPosition, waypointIndex);
             }
         }
     }

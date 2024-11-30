@@ -11,6 +11,7 @@ public class Character_Stat
     protected int playerSpawnCount;
     protected bool isFinished;
     protected Vector3 lastCheckpoint;
+    protected int wayPoint;
 
     public Character_Stat(bool _isAI, string _nicknames, Vector3 _currentCheckpoint)
     {
@@ -43,6 +44,11 @@ public class Character_Stat
         get { return lastCheckpoint; }
     }
 
+    public int WayPoint
+    {
+        get { return wayPoint; }
+    }
+
     public void Finish() => isFinished = true;
 
     public void Death()
@@ -58,9 +64,10 @@ public class Character_Stat
         }
     }
 
-    public void NewSpawnPosition(Vector3 currentPosition)
+    public void NewSpawnPosition(Vector3 currentPosition, int lastWayPoint)
     {
         lastCheckpoint = currentPosition;
+        wayPoint = lastWayPoint;
     }
     public void Point()
     {

@@ -103,7 +103,7 @@ public class Ai_Controller : Entity
     }
     private int SearchIndex()
     {
-        Game_Manager manager = FindAnyObjectByType<Game_Manager>();
+        Game_Manager manager = FindObjectOfType<Game_Manager>();
         return manager.GetPlayerIndex(entity); // don't touch please
     }
 
@@ -348,30 +348,77 @@ public class Ai_Controller : Entity
         }
     }
 
+    //public void ResearchTarget()
+    //{
+    //    List<(float, int, Vector3)> TotaldistanceToTarget = new List<(float, int, Vector3)>();
+    //    float distanceToTargetRespawn;
+
+    //    for (int i = 0; i < circuit.waypoints.Length; i++)
+    //    {
+    //        distanceToTargetRespawn = Vector3.Distance(circuit.waypoints[i].transform.position, drive._rigidbody.gameObject.transform.position);
+    //        TotaldistanceToTarget.Add((distanceToTargetRespawn, i, circuit.waypoints[i].transform.position));
+    //    }
+
+    //    TotaldistanceToTarget = TotaldistanceToTarget.OrderBy(d => d.Item1).ToList();
+    //    currentTackerWayPoint = TotaldistanceToTarget.First().Item2;
+    //    currentWayPoint = TotaldistanceToTarget.First().Item2;
+    //    target = circuit.waypoints[currentWayPoint].transform.position;
+
+    //    if (currentWayPoint <= wayPointNumbers)
+    //    {
+    //        nextWayPoint = Mathf.Clamp(currentWayPoint + 1, 0, wayPointNumbers);
+    //        nextTarget = circuit.waypoints[nextWayPoint].transform.position;
+    //    }
+
+    //    tracker.transform.position = circuit.waypoints[currentTackerWayPoint].transform.position;
+    //    Debug.Log(TotaldistanceToTarget.First().Item1 + "," + TotaldistanceToTarget.First().Item2 + "," + TotaldistanceToTarget.First().Item3);
+    //}
+
     public void ResearchTarget()
     {
-        List<(float, int, Vector3)> TotaldistanceToTarget = new List<(float, int, Vector3)>();
-        float distanceToTargetRespawn;
+        currentWayPoint = gameData.characters[currentIndex].WayPoint;
 
-        for (int i = 0; i < circuit.waypoints.Length; i++)
+        if (currentIndex != -1)
         {
-            distanceToTargetRespawn = Vector3.Distance(circuit.waypoints[i].transform.position, drive._rigidbody.gameObject.transform.position);
-            TotaldistanceToTarget.Add((distanceToTargetRespawn, i, circuit.waypoints[i].transform.position));
+            if (currentWayPoint <= wayPointNumbers)
+            {
+                nextWayPoint = Mathf.Clamp(currentWayPoint + 1, 0, wayPointNumbers);
+                nextTarget = circuit.waypoints[nextWayPoint].transform.position;
+                currentTackerWayPoint = currentWayPoint;
+                target = circuit.waypoints[currentWayPoint].transform.position;
+            }
         }
-
-        TotaldistanceToTarget = TotaldistanceToTarget.OrderBy(d => d.Item1).ToList();
-        currentTackerWayPoint = TotaldistanceToTarget.First().Item2;
-        currentWayPoint = TotaldistanceToTarget.First().Item2;
-        target = circuit.waypoints[currentWayPoint].transform.position;
-
-        if (currentWayPoint <= wayPointNumbers)
+        else
         {
-            nextWayPoint = Mathf.Clamp(currentWayPoint + 1, 0, wayPointNumbers);
-            nextTarget = circuit.waypoints[nextWayPoint].transform.position;
+            float closestTarget = Mathf.Infinity;
+            float distanceToTargetRespawn;
+            int closestWaypointIndex = -1;
+
+            for (int i = 0; i < circuit.waypoints.Length; i++)
+            {
+                distanceToTargetRespawn = Vector3.Distance(circuit.waypoints[i].transform.position, drive._rigidbody.gameObject.transform.position);
+                if (closestTarget > distanceToTargetRespawn)
+                {
+                    closestTarget = distanceToTargetRespawn;
+                    closestWaypointIndex = i;
+                }
+            }
+
+            if (closestWaypointIndex != -1)
+            {
+                currentWayPoint = closestWaypointIndex;
+                currentTackerWayPoint = closestWaypointIndex;
+                target = circuit.waypoints[currentWayPoint].transform.position;
+            }
+
+            if (currentWayPoint <= wayPointNumbers)
+            {
+                nextWayPoint = Mathf.Clamp(currentWayPoint + 1, 0, wayPointNumbers);
+                nextTarget = circuit.waypoints[nextWayPoint].transform.position;
+            }
         }
 
         tracker.transform.position = circuit.waypoints[currentTackerWayPoint].transform.position;
-        Debug.Log(TotaldistanceToTarget.First().Item1 + "," + TotaldistanceToTarget.First().Item2 + "," + TotaldistanceToTarget.First().Item3);
     }
 
     private void OnDrawGizmos()
