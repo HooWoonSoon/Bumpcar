@@ -29,13 +29,13 @@ public class Ai_Controller : Entity
     [Header("Collect Item Range")]
     [SerializeField] private float detectItemRange;
     [SerializeField] private int randomChanceMin = 0; 
-    [SerializeField] private int randomChanceMax = 5;
+    [SerializeField] private int randomChanceMax = 2;
     private bool isTargetingItem;
     private Hashtable processedItem = new Hashtable();
 
     #region Ai Personality
     [SerializeField] private Personality personality;
-    [SerializeField] private float personalityDuration = 8f;
+    [SerializeField] private float personalityDuration = 6f;
     private float timerResetValue;
     #endregion
 
