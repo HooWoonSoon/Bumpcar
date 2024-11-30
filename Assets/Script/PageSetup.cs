@@ -10,28 +10,37 @@ public class PageSetup : MonoBehaviour
     [SerializeField] private GameObject loadScreen;
     [SerializeField] private TextMeshProUGUI progress;
 
+    public void PressButtonToMain()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     public void PressButtonLevel1()
     {
         int currentLevelindex = 2;
         StartCoroutine(LoadLevel(currentLevelindex));
+        loadScreen.SetActive(true);
+        progress.gameObject.SetActive(true);
     }
 
     public void PressButtonLevel2()
     {
         int currentLevelindex = 3;
         StartCoroutine(LoadLevel(currentLevelindex));
+        loadScreen.SetActive(true);
+        progress.gameObject.SetActive(true);
     }
 
     public void PressButtonLevel3()
     {
         int currentLevelindex = 4;
         StartCoroutine(LoadLevel(currentLevelindex));
+        loadScreen.SetActive(true);
+        progress.gameObject.SetActive(true);
     }
 
     private IEnumerator LoadLevel(int currentLevelindex)
     {
-        loadScreen.SetActive(true);
-
         AsyncOperation operation = SceneManager.LoadSceneAsync(currentLevelindex);
 
         operation.allowSceneActivation = false;
@@ -40,7 +49,7 @@ public class PageSetup : MonoBehaviour
             mascot.transform.Rotate(Vector3.forward);
 
             progress.color = Color.white;
-            progress.text = (operation.progress * 100).ToString() + "%";
+            progress.text = (Mathf.Sign(operation.progress * 100)).ToString() + "%";
 
             if (operation.progress >= 0.9f)
             {
